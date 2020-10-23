@@ -23,9 +23,9 @@ import com.jagrosh.jmusicbot.commands.admin.*;
 import com.jagrosh.jmusicbot.commands.dj.*;
 import com.jagrosh.jmusicbot.commands.fun.*;
 import com.jagrosh.jmusicbot.commands.general.HelpCmd;
-import com.jagrosh.jmusicbot.commands.general.RamCmd;
 import com.jagrosh.jmusicbot.commands.general.SettingsCmd;
 import com.jagrosh.jmusicbot.commands.general.SirenAboutCmd;
+import com.jagrosh.jmusicbot.commands.general.StatsCmd;
 import com.jagrosh.jmusicbot.commands.mod.BanCmd;
 import com.jagrosh.jmusicbot.commands.mod.KickCmd;
 import com.jagrosh.jmusicbot.commands.mod.WarnCmd;
@@ -98,7 +98,7 @@ public class SirenBot {
                 .addCommands(aboutCommand,
                         new PingCommand(),
                         new SettingsCmd(bot),
-                        new RamCmd(bot),
+                        new StatsCmd(bot),
                         helpCmd,
 
                         new LyricsCmd(bot),
@@ -139,6 +139,7 @@ public class SirenBot {
                         new SetvcCmd(bot),
                         new AnnounceEmbedCmd(bot),
                         new PruneCmd(bot),
+                        new SetEmbedColorCmd(bot),
 
                         new AutoplaylistCmd(bot),
                         new GuildListCmd(bot.getWaiter()),

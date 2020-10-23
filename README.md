@@ -22,8 +22,9 @@ General:
 
 siren about - Shows info about the bot
 siren ping - Checks the bot's latency
-siren ram - Checks the bot's memory usage
+siren stats - Checks the bot's various stats
 siren settings - Shows the bot's settings
+siren help - Shows these commands
 
 Fun:
 
@@ -41,6 +42,7 @@ siren nowplaying - Shows the song that is currently playing
 siren play <title|URL|subcommand> - Plays the provided song
 siren playlists - Shows the available playlists
 siren queue [pagenum] - Shows the current queue
+siren seek <HH:MM:SS>|<MM:SS>|<SS> - Seeks to a certain position in the song (Exmaple: "siren seek 10:00" would seek to 10 mins.)
 siren remove <position|ALL> - Removes a song from the queue
 siren search <query> - Searches Youtube for a provided query
 siren scsearch <query> - Searches Soundcloud for a provided query
@@ -72,6 +74,8 @@ siren setdj <rolename|NONE> - Sets the DJ role for certain music commands
 siren settc <channel|NONE> - Sets the text channel for music commands
 siren setvc <channel|NONE> - Sets the voice channel for playing music
 siren purge <number of messages> - Deletes messages in bulk (Max of 100)
+siren announce <message> - Puts whatever you say into an embed (More features will be added soon)
+siren setembedcolor <hex code|role> - You can change the color of Siren's embeds (Or you set them to be the color of Siren's role with the command "siren setembedcolor role".)
 ```
 
 ## Questions/Suggestions/Bug Reports

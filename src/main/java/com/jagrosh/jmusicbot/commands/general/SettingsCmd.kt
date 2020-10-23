@@ -13,59 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands.general;
+package com.jagrosh.jmusicbot.commands.general
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
-import com.jagrosh.jmusicbot.Bot;
-import com.jagrosh.jmusicbot.settings.Settings;
-import com.jagrosh.jmusicbot.utils.FormatUtil;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.VoiceChannel;
+import com.jagrosh.jdautilities.command.Command
+import com.jagrosh.jdautilities.command.CommandEvent
+import com.jagrosh.jmusicbot.Bot
+import com.jagrosh.jmusicbot.commands.admin.getDefaultColor
+import com.jagrosh.jmusicbot.settings.Settings
+import com.jagrosh.jmusicbot.utils.FormatUtil
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.MessageBuilder
+import net.dv8tion.jda.api.entities.Guild
 
 /**
  *
- * @author John Grosh <john.a.grosh@gmail.com>
+ * @author John Grosh <john.a.grosh></john.a.grosh>@gmail.com>
  */
-public class SettingsCmd extends Command 
-{
-    private final static String EMOJI = "\uD83C\uDFA7"; // 🎧
-    
-    public SettingsCmd(Bot bot)
-    {
-        this.name = "settings";
-        this.help = "shows the bots settings";
-        this.aliases = bot.getConfig().getAliases(this.name);
-        this.guildOnly = true;
-    }
-    
-    @Override
-    protected void execute(CommandEvent event) 
-    {
-        Settings s = event.getClient().getSettingsFor(event.getGuild());
-        MessageBuilder builder = new MessageBuilder()
+class SettingsCmd(bot: Bot) : Command() {
+    override fun execute(event: CommandEvent) {
+        val s = event.client.getSettingsFor<Settings>(event.guild)
+        val builder = MessageBuilder()
                 .append(EMOJI + " **")
-                .append(FormatUtil.filter(event.getSelfUser().getName()))
-                .append("** settings:");
-        TextChannel tchan = s.getTextChannel(event.getGuild());
-        VoiceChannel vchan = s.getVoiceChannel(event.getGuild());
-        Role role = s.getRole(event.getGuild());
-        EmbedBuilder ebuilder = new EmbedBuilder()
-                .setColor(event.getSelfMember().getColor())
-                .setDescription("Text Channel: " + (tchan == null ? "Any" : "**#" + tchan.getName() + "**")
-                        + "\nVoice Channel: " + (vchan == null ? "Any" : "**" + vchan.getName() + "**")
-                        + "\nDJ Role: " + (role == null ? "None" : "**" + role.getName() + "**")
-                        + "\nCustom Prefix: " + (s.getPrefix() == null ? "None" : "`" + s.getPrefix() + "`")
-                        + "\nRepeat Mode: **" + (s.getRepeatMode() ? "On" : "Off") + "**"
-                        + "\nDefault Playlist: " + (s.getDefaultPlaylist() == null ? "None" : "**" + s.getDefaultPlaylist() + "**")
-                        )
-                .setFooter(event.getJDA().getGuilds().size() + " servers | "
-                        + event.getJDA().getGuilds().stream().filter(g -> g.getSelfMember().getVoiceState().inVoiceChannel()).count()
-                        + " audio connections", null);
-        event.getChannel().sendMessage(builder.setEmbed(ebuilder.build()).build()).queue();
+                .append(FormatUtil.filter(event.selfUser.name))
+                .append("** settings:")
+        val tchan = s.getTextChannel(event.guild)
+        val vchan = s.getVoiceChannel(event.guild)
+        val role = s.getRole(event.guild)
+        val ebuilder = EmbedBuilder()
+                .setColor(getDefaultColor(event))
+                .setDescription("""
+    Text Channel: ${if (tchan == null) "Any" else "**#" + tchan.name + "**"}
+    Voice Channel: ${if (vchan == null) "Any" else "**" + vchan.name + "**"}
+    DJ Role: ${if (role == null) "None" else "**" + role.name + "**"}
+    Custom Prefix: ${if (s.prefix == null) "None" else "`" + s.prefix + "`"}
+    Repeat Mode: **${if (s.repeatMode) "On" else "Off"}**
+    Default Playlist: ${if (s.defaultPlaylist == null) "None" else "**" + s.defaultPlaylist + "**"}
+    Embed Color: ${if (s.embedColor == null) "**Role Color**" else "**Custom Hex**"}
+    """.trimIndent() // TODO replace "Custom Hex" with the actual custom hex
+                )
+                .setFooter(event.jda.guilds.size.toString() + " servers | "
+                        + event.jda.guilds.stream().filter { g: Guild -> g.selfMember.voiceState!!.inVoiceChannel() }.count()
+                        + " audio connections", null)
+        event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
     }
-    
+
+    companion object {
+        private const val EMOJI = "\uD83C\uDFA7" // 🎧
+    }
+
+    init {
+        name = "settings"
+        help = "shows the bots settings"
+        aliases = bot.config.getAliases(name)
+        guildOnly = true
+    }
 }

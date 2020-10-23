@@ -21,11 +21,8 @@ import com.jagrosh.jmusicbot.commands.OwnerCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.MessageBuilder;
 
-import java.awt.*;
+import static com.jagrosh.jmusicbot.commands.admin.SetEmbedColorCmdKt.getDefaultColor;
 
-/**
- * @author John Grosh <john.a.grosh@gmail.com>
- */
 public class UpdateEmbedCmd extends OwnerCommand {
     public UpdateEmbedCmd(Bot bot) {
         this.name = "update";
@@ -39,7 +36,7 @@ public class UpdateEmbedCmd extends OwnerCommand {
     protected void execute(CommandEvent event) {
         MessageBuilder builder = new MessageBuilder();
         EmbedBuilder ebuilder = new EmbedBuilder()
-                .setColor(Color.red)
+                .setColor(getDefaultColor(event))
                 .setTitle("**SirenBot** has updated!")
                 .setDescription(event.getArgs());
         event.getChannel().sendMessage(builder.setEmbed(ebuilder.build()).build()).queue();

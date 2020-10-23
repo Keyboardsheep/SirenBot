@@ -13,38 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands.general
+package com.jagrosh.jmusicbot.commands.admin
 
-import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jmusicbot.Bot
+import com.jagrosh.jmusicbot.commands.AdminCommand
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.MessageBuilder
-import java.math.BigDecimal
-import java.math.RoundingMode
 
-class RamCmd(bot: Bot) : Command() {
+class AnnounceEmbedCmd(bot: Bot) : AdminCommand() {
     override fun execute(event: CommandEvent) {
-        val totalMem = Runtime.getRuntime().totalMemory()
-        val usedMem = totalMem - Runtime.getRuntime().freeMemory()
-        val usedMemBD: BigDecimal
-        val totalMemBD: BigDecimal
-        val memPercent: BigDecimal
-        usedMemBD = BigDecimal(usedMem)
-        totalMemBD = BigDecimal(totalMem)
-        memPercent = BigDecimal(100)
         val builder = MessageBuilder()
-        val trueRamPercent = usedMemBD.divide(totalMemBD, 4, RoundingMode.HALF_DOWN).multiply(memPercent)
         val ebuilder = EmbedBuilder()
-                .setColor(1015169)
-                .setTitle("My memory is at **" + trueRamPercent.setScale(2, BigDecimal.ROUND_HALF_UP) + "%**")
+                .setColor(getDefaultColor(event))
+                .setTitle(event.args)
+        event.channel.deleteMessageById(event.message.id)
         event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
     }
 
     init {
-        name = "ram"
-        help = "displays Siren's memory usage"
-        arguments = ""
+        name = "announce"
+        help = "posts an announcement **(BETA)**"
+        arguments = "<message>"
         aliases = bot.config.getAliases(name)
         guildOnly = true
     }

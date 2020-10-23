@@ -18,6 +18,7 @@ package com.jagrosh.jmusicbot.commands.`fun`
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jmusicbot.Bot
 import com.jagrosh.jmusicbot.commands.FunCommand
+import com.jagrosh.jmusicbot.commands.admin.getDefaultColor
 import com.jagrosh.jmusicbot.utils.queueMessageToChannel
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.JDA
@@ -82,7 +83,7 @@ class RollCmd(bot: Bot) : FunCommand() {
             // Show dice roll GUI
             val builder = MessageBuilder()
             val ebuilder = EmbedBuilder()
-                    .setColor(event.selfMember.color)
+                    .setColor(getDefaultColor(event))
                     .setTitle("**:cat: Please react with the dice you want to roll!**")
                     .setDescription(
                             """

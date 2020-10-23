@@ -13,94 +13,88 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands.admin;
+package com.jagrosh.jmusicbot.commands.admin
 
-import com.jagrosh.jdautilities.command.CommandEvent;
-import com.jagrosh.jmusicbot.Bot;
-import com.jagrosh.jmusicbot.commands.AdminCommand;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import com.jagrosh.jdautilities.command.CommandEvent
+import com.jagrosh.jmusicbot.Bot
+import com.jagrosh.jmusicbot.commands.AdminCommand
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.MessageBuilder
+import net.dv8tion.jda.api.entities.Message
+import java.awt.Color
+import java.util.*
 
-import java.awt.*;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-public class PruneCmd extends AdminCommand {
-    public static final int QUIET_MILLIS = 5000;
-    private long lastExecutionMillis = 0;
-
-    public PruneCmd(Bot bot) {
-        this.name = "prune";
-        this.help = "deletes messages in bulk";
-        this.arguments = "<number of messages>";
-        this.aliases = bot.getConfig().getAliases(this.name);
-        this.guildOnly = true;
-    }
-
-    @Override
-    protected void execute(CommandEvent event) {
-        long now = System.currentTimeMillis();
+class PruneCmd(bot: Bot) : AdminCommand() {
+    private var lastExecutionMillis: Long = 0
+    override fun execute(event: CommandEvent) {
+        val now = System.currentTimeMillis()
         if (now > lastExecutionMillis + QUIET_MILLIS) {
-            if (event.getArgs().length() < 1) {
+            if (event.args.length < 1) {
                 // Usage
-                EmbedBuilder usage = new EmbedBuilder();
-                usage.setColor(0xff3923);
-                usage.setTitle("Specify amount to delete");
-                usage.setDescription("Usage: `siren prune [# of messages]`");
-                event.getChannel().sendMessage(usage.build()).queue();
+                val usage = EmbedBuilder()
+                usage.setColor(0xff3923)
+                usage.setTitle("Specify amount to delete")
+                usage.setDescription("Usage: `siren prune [# of messages]`")
+                event.channel.sendMessage(usage.build()).queue()
             } else {
                 try {
-                    List<Message> messages = event.getChannel().getHistory().retrievePast(Integer.parseInt(event.getArgs())).complete();
-                    event.getChannel().purgeMessages(messages);
+                    val messages = event.channel.history.retrievePast(event.args.toInt()).complete()
+                    event.channel.purgeMessages(messages)
 
                     // Success
-                    EmbedBuilder success = new EmbedBuilder();
-                    success.setColor(0x22ff2a);
-                    success.setTitle(":smiley_cat: Successfully deleted " + event.getArgs() + " messages.");
-                    MessageEmbed messageEmbed = success.build();
-                    event.getChannel().sendMessage(messageEmbed).queue(message -> deleteAfterDelay(message));
-                    lastExecutionMillis = now;
-
-                } catch (IllegalArgumentException e) {
+                    val success = EmbedBuilder()
+                    success.setColor(0x22ff2a)
+                    success.setTitle(":smiley_cat: Successfully deleted " + event.args + " messages.")
+                    val messageEmbed = success.build()
+                    event.channel.sendMessage(messageEmbed).queue { message: Message -> deleteAfterDelay(message) }
+                    lastExecutionMillis = now
+                } catch (e: IllegalArgumentException) {
                     if (e.toString().startsWith("java.lang.IllegalArgumentException: Message retrieval")) {
                         // Too many messages
-                        EmbedBuilder error = new EmbedBuilder();
-                        error.setColor(0xff3923);
-                        error.setTitle(":scream_cat: Too many messages selected");
-                        error.setDescription("**You can only delete a max of 100 messages!**");
-                        event.getChannel().sendMessage(error.build()).queue();
+                        val error = EmbedBuilder()
+                        error.setColor(0xff3923)
+                        error.setTitle(":scream_cat: Too many messages selected")
+                        error.setDescription("**You can only delete a max of 100 messages!**")
+                        event.channel.sendMessage(error.build()).queue()
                     } else {
                         // Messages too old
                         // TODO Add other error
-                        EmbedBuilder error = new EmbedBuilder();
-                        error.setColor(0xff3923);
-                        error.setTitle(":scream_cat: Selected messages are older than 2 weeks");
-                        error.setDescription("Messages older than 2 weeks cannot be deleted.");
-                        event.getChannel().sendMessage(error.build()).queue();
+                        val error = EmbedBuilder()
+                        error.setColor(0xff3923)
+                        error.setTitle(":scream_cat: Selected messages are older than 2 weeks")
+                        error.setDescription("Messages older than 2 weeks cannot be deleted.")
+                        event.channel.sendMessage(error.build()).queue()
                     }
                 }
             }
         } else {
-            MessageBuilder builder = new MessageBuilder();
-            EmbedBuilder ebuilder = new EmbedBuilder()
+            val builder = MessageBuilder()
+            val ebuilder = EmbedBuilder()
                     .setColor(Color.RED)
                     .setTitle("**Please slow down between commands!**")
-                    .setDescription("Please wait ** " + (((QUIET_MILLIS - (now - lastExecutionMillis)) / 1000) + 1) + " ** more seconds.");
-            event.getChannel().sendMessage(builder.setEmbed(ebuilder.build()).build()).queue();
+                    .setDescription("Please wait ** " + ((QUIET_MILLIS - (now - lastExecutionMillis)) / 1000 + 1) + " ** more seconds.")
+            event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
         }
     }
 
-    private void deleteAfterDelay(Message message) {
-        TimerTask task = new TimerTask() {
-            public void run() {
-                message.delete().queue();
+    private fun deleteAfterDelay(message: Message) {
+        val task: TimerTask = object : TimerTask() {
+            override fun run() {
+                message.delete().queue()
             }
-        };
-
-        new Timer("MessageDeleteTimer").schedule(task, 5000);
+        }
+        Timer("MessageDeleteTimer").schedule(task, 5000)
     }
 
+    companion object {
+        const val QUIET_MILLIS = 5000
+    }
+
+    init {
+        name = "prune"
+        help = "deletes messages in bulk"
+        arguments = "<number of messages>"
+        aliases = bot.config.getAliases(name)
+        guildOnly = true
+    }
 }
