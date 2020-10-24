@@ -21,8 +21,10 @@ import com.jagrosh.jmusicbot.commands.AdminCommand
 import com.jagrosh.jmusicbot.settings.Settings
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.MessageBuilder
+import net.dv8tion.jda.api.entities.Guild
 import org.slf4j.LoggerFactory
 import java.awt.Color
+import java.lang.String
 
 class SetEmbedColorCmd(bot: Bot) : AdminCommand() {
     var log = LoggerFactory.getLogger("CatCmd")
@@ -52,11 +54,12 @@ class SetEmbedColorCmd(bot: Bot) : AdminCommand() {
                     val decimalColor = Integer.parseInt(hexColor, 16)
                     settings.embedColor = decimalColor
                     val builder = MessageBuilder()
+                    val cleanHexColor = String.format("%06X", 0xFFFFFF and decimalColor)
                     val ebuilder = EmbedBuilder()
                             .setColor(getDefaultColor(event))
                             .setTitle(":cat: Successfully changed embed color!")
-                            .setDescription("You have changed this guild's embed color to `$hexColor`.\n\n*If you want a different color, click [__here__](https://www.google.com/search?q=color+picker) to select your new hex.*")
-                            .setThumbnail("https://singlecolorimage.com/get/$hexColor/400x400")
+                            .setDescription("You have changed this guild's embed color to `#$cleanHexColor`.\n\n*If you want a different color, click [__here__](https://www.google.com/search?q=color+picker) to select your new hex.*")
+                            .setThumbnail("https://singlecolorimage.com/get/$cleanHexColor/400x400")
                     event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
                 } catch (e: NumberFormatException) {
                     log.info("Cannot parse hex ($hexColor)")
@@ -88,8 +91,12 @@ class SetEmbedColorCmd(bot: Bot) : AdminCommand() {
 
 fun getDefaultColor(event: CommandEvent): Int {
     val settings = event.client.getSettingsFor<Settings>(event.guild)
-    return if (settings.embedColor == null) {
-        event.guild.selfMember.color?.rgb ?: Color.black.rgb
+    return getDefaultColor(settings, event.guild)
+}
+
+fun getDefaultColor(settings: Settings?, guild: Guild): Int {
+    return if (settings?.embedColor == null) {
+        guild.selfMember.color?.rgb ?: Color.black.rgb
     } else {
         settings.embedColor
     }

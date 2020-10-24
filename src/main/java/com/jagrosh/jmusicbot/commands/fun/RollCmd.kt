@@ -95,8 +95,8 @@ class RollCmd(bot: Bot) : FunCommand() {
                         🅱 Twenty sided dice
                         ❎ Cancel dice rolling**
                         **TIPS:**
-                        For a custom amount of sides, type `siren roll <amount of sides>`.
-                        To make the dice roll private, type `siren roll -s`.
+                        For a custom amount of sides, type `${event.client.prefix}roll <amount of sides>`.
+                        To make the dice roll private, type `${event.client.prefix}roll -s`.
                         """.trimIndent())
             val finalUseDm = useDm
             val embedMessage = builder.setEmbed(ebuilder.build()).build()

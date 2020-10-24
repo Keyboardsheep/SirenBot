@@ -39,7 +39,7 @@ class BanCmd(bot: Bot) : ModCommand() {
             reason = "Reason not specified."
         }
         if (rawUserId.isEmpty()) {
-            sendAndQueueEmbed(event, Color.red, ":scream_cat: Please mention a user!", "**Usage:** siren ban <username> [reason]")
+            sendAndQueueEmbed(event, Color.red, ":scream_cat: Please mention a user!", "**Usage:** ${event.client.prefix}ban <username> [reason]")
         } else {
             val userId = rawUserId.replace("\\D+".toRegex(), "")
             var user: User?

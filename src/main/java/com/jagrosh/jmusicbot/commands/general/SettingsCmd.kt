@@ -24,6 +24,7 @@ import com.jagrosh.jmusicbot.utils.FormatUtil
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.MessageBuilder
 import net.dv8tion.jda.api.entities.Guild
+import java.lang.String
 
 /**
  *
@@ -48,7 +49,7 @@ class SettingsCmd(bot: Bot) : Command() {
     Custom Prefix: ${if (s.prefix == null) "None" else "`" + s.prefix + "`"}
     Repeat Mode: **${if (s.repeatMode) "On" else "Off"}**
     Default Playlist: ${if (s.defaultPlaylist == null) "None" else "**" + s.defaultPlaylist + "**"}
-    Embed Color: ${if (s.embedColor == null) "**Role Color**" else "**Custom Hex**"}
+    Embed Color: ${if (s.embedColor == null) "**Role Color**" else "**${String.format("#%06X", 0xFFFFFF and s.embedColor)}**"}
     """.trimIndent() // TODO replace "Custom Hex" with the actual custom hex
                 )
                 .setFooter(event.jda.guilds.size.toString() + " servers | "

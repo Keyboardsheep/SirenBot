@@ -34,7 +34,7 @@ class PruneCmd(bot: Bot) : AdminCommand() {
                 val usage = EmbedBuilder()
                 usage.setColor(0xff3923)
                 usage.setTitle("Specify amount to delete")
-                usage.setDescription("Usage: `siren prune [# of messages]`")
+                usage.setDescription("Usage: `${event.client.prefix}prune [# of messages]`")
                 event.channel.sendMessage(usage.build()).queue()
             } else {
                 try {

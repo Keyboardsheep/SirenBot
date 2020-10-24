@@ -60,15 +60,18 @@ class SirenAboutCmd(private val color: Color, private val description: String, p
         val descr = StringBuilder().append("Hello! I am **").append(event.selfUser.name).append("**, a bot that is hosted and owned by **Keyboardsheep 82**.")
                 .append("""
     
-    Type **`siren help`** to see my commands!
+    Type **`${event.client.prefix}help`** to see my commands!
     Please [`visit`](https://siren.fun) my website!
     """.trimIndent()).append(invline).append("\n\nSome of my features include: ```css")
         for (feature in features) descr.append("\n").append(if (event.client.success.startsWith("<")) REPLACEMENT_ICON else event.client.success).append(" ").append(feature)
         descr.append(" ```")
         builder.setDescription(descr)
-        builder.addField("Stats", """${event.jda.guilds.size} servers\n1 shard""", true)
-        builder.addField("Users", """${event.jda.users.size} unique\n${event.jda.guilds.stream().mapToInt { g: Guild -> g.members.size }.sum()} total""", true)
-        builder.addField("Channels", """${event.jda.textChannels.size} Text\n${event.jda.voiceChannels.size} Voice""", true)
+        builder.addField("Stats", """${event.jda.guilds.size} servers
+|1 shard""".trimMargin(), true)
+        builder.addField("Users", """${event.jda.users.size} unique
+            |${event.jda.guilds.stream().mapToInt { g: Guild -> g.members.size }.sum()} total""".trimMargin(), true)
+        builder.addField("Channels", """${event.jda.textChannels.size} Text
+            |${event.jda.voiceChannels.size} Voice""".trimMargin(), true)
         builder.setFooter("Last restart", null)
         builder.setTimestamp(event.client.startTime)
         event.reply(builder.build())
