@@ -27,7 +27,7 @@ class AnnounceEmbedCmd(bot: Bot) : AdminCommand() {
         val ebuilder = EmbedBuilder()
                 .setColor(getDefaultColor(event))
                 .setTitle(event.args)
-        event.channel.deleteMessageById(event.message.id)
+        event.channel.deleteMessageById(event.message.id).queue()
         event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
     }
 

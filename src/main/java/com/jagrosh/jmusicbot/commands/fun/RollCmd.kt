@@ -27,7 +27,6 @@ import net.dv8tion.jda.api.entities.*
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
 import java.awt.Color
 import java.util.*
-import java.util.stream.Collectors
 
 class RollCmd(bot: Bot) : FunCommand() {
     protected var lastExecutionMillisByChannelMap: MutableMap<String, Long> = LinkedHashMap()
@@ -143,7 +142,7 @@ class RollCmd(bot: Bot) : FunCommand() {
 
     private fun rollDie(jda: JDA, channel: MessageChannel, member: Member?, sideCount: Int, dmUserId: String?) { // TODO: 10/14/2020 Make only command operator able to control dice rolling
         val rollOutput = Random().nextInt(sideCount) + 1
-        val rollOutputMessage = Arrays.stream(rollOutput.toString().split("".toRegex()).toTypedArray()).map { s: String -> digitToStringMap[s] }.collect(Collectors.joining())
+        val rollOutputMessage = rollOutput.toString().map { it.toString() }.toTypedArray().map { s: String -> digitToStringMap[s] }.joinToString()
         val now = System.currentTimeMillis()
         val lastExecutionMillis = lastExecutionMillisByChannelMap.getOrDefault(channel.id, 0L)
         //        if (now > lastExecutionMillis + QUIET_MILLIS) {
