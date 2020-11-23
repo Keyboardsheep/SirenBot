@@ -5,6 +5,7 @@
 ## Known Bugs
 
 * ~~When trying to play a song, it will sometimes display an error (Error loading track)~~
+* When rolling a die, if the output is 2+ digits long is will put commas in between every digit
 
 ## Planned Features
 
