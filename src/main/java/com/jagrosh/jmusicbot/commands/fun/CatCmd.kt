@@ -67,6 +67,7 @@ class CatCmd(bot: Bot) : BaseCatCmd() {
                     .setColor(getDefaultColor(event))
                     .setImage(kittyUrl)
                     .setDescription("**I found a kitty!** :cat:")
+                    .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
             lastExecutionMillisByChannelMap[channelId] = now
         } else {

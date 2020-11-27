@@ -104,6 +104,7 @@ public class SirenBot {
                         new LyricsCmd(bot),
                         new NowplayingCmd(bot),
                         new PlayCmd(bot),
+//                        new ErrorPlayCmd(bot),
                         new PlaylistsCmd(bot),
                         new QueueCmd(bot),
                         new RemoveCmd(bot),
@@ -124,9 +125,14 @@ public class SirenBot {
                         new VolumeCmd(bot),
 
                         new CatCmd(bot),
+                        new CatFactCmd(bot),
+//                        new TriviaCmd(bot),
                         new CatApiCatCmd(bot),
                         new HttpCatCmd(bot),
                         new DogApiDogCmd(bot),
+                        new ChatBotCmd(bot),
+                        new CovidCmd(bot),
+                        new LoveTestCmd(bot),
                         rollCmd,
 
                         new KickCmd(bot),
@@ -138,6 +144,7 @@ public class SirenBot {
                         new SettcCmd(bot),
                         new SetvcCmd(bot),
                         new AnnounceEmbedCmd(bot),
+//                        new PollCmd(bot),
                         new PruneCmd(bot),
                         new SetEmbedColorCmd(bot),
 

@@ -16,7 +16,7 @@ class HelpCmd(bot: Bot) : Command() {
     init {
         name = "help"
         help = "shows the menu you're looking at right now"
-        guildOnly = true
+        guildOnly = false
     }
 
     override fun execute(event: CommandEvent) {
@@ -93,7 +93,7 @@ class HelpCmd(bot: Bot) : Command() {
                             }
                     val owner: User? = event.jda.getUserById(commandClient.ownerId)
                     if (owner != null) {
-                        Builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
+                        Builder.setFooter("For additional help, contact ${owner.asTag} or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
                     }
                     event.replyInDm(Builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
                 } else {

@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.io.IOException
 
-class DogApiDogCmd(bot: Bot) : BaseCatCmd() {
-    var log = LoggerFactory.getLogger("DogCmd")
+class CatFactCmd(bot: Bot) : BaseCatCmd() {
+    var log = LoggerFactory.getLogger("CatFactCmd")
     override fun execute(event: CommandEvent) {
         val now = System.currentTimeMillis()
         val channelId = event.channel.id
@@ -41,8 +41,8 @@ class DogApiDogCmd(bot: Bot) : BaseCatCmd() {
             val builder = MessageBuilder()
             val ebuilder = EmbedBuilder()
                     .setColor(getDefaultColor(event))
-                    .setImage(kittyUrl)
-                    .setDescription(":pouting_cat: **I found a doggo, next time look for a cat!**")
+                    .setTitle("**:cat: Random Cat Fact:**")
+                    .setImage("$kittyFact")
                     .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
             lastExecutionMillisByChannelMap[channelId] = now
@@ -59,12 +59,12 @@ class DogApiDogCmd(bot: Bot) : BaseCatCmd() {
     // shut down the connection manager to ensure
     // immediate deallocation of all system resources
     // Create a response handler
-    private val kittyUrl: String
+    private val kittyFact: String
         // Body contains your json stirng
         private get() {
             val httpclient: HttpClient = DefaultHttpClient()
             return try {
-                val httpget = HttpGet("https://api.thedogapi.com/v1/images/search/")
+                val httpget = HttpGet("https://catfact.ninja/fact")
                 println("executing request " + httpget.uri)
 
                 // Create a response handler
@@ -74,14 +74,14 @@ class DogApiDogCmd(bot: Bot) : BaseCatCmd() {
                 responseBody = try {
                     httpclient.execute(httpget, responseHandler)
                 } catch (e: IOException) {
-                    log.warn("Unable to fetch dog.", e)
+                    log.warn("Unable to fetch cat fact.", e)
                     return "https://http.cat/500"
                 }
                 try {
-                    ((ObjectMapper().readValue(responseBody, MutableList::class.java) as List<*>).get(0) as Map<*, *>)["url"] as String
+                    ((ObjectMapper().readValue("[$responseBody]", MutableList::class.java) as List<*>)[0] as Map<*, *>)["fact"] as String
                 } catch (e: JsonProcessingException) {
-                    log.warn("Unable to read dog response.", e)
-                    "https://http.cat/400"
+                    log.warn("Unable to read cat fact response.", e)
+                    return "https://http.cat/400"
                 }
             } finally {
                 // When HttpClient instance is no longer needed,
@@ -93,8 +93,8 @@ class DogApiDogCmd(bot: Bot) : BaseCatCmd() {
 
     init {
         this.category = Category("Fun")
-        name = "dog"
-        help = "shows some unknown doggos"
+        name = "catfact"
+        help = "shows a kitty fact"
         aliases = bot.config.getAliases(name)
         guildOnly = false
     }

@@ -36,6 +36,7 @@ class HttpCatCmd(bot: Bot) : BaseCatCmd() {
                     .setColor(getDefaultColor(event))
                     .setImage(kittyUrl)
                     .setDescription("**I found a http status kitty!** :cat:")
+                    .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
             lastExecutionMillisByChannelMap[channelId] = now
         } else {

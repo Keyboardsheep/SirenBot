@@ -39,7 +39,21 @@ public class PlayerManager extends DefaultAudioPlayerManager
     {
         AudioSourceManagers.registerRemoteSources(this);
         AudioSourceManagers.registerLocalSource(this);
-        source(YoutubeAudioSourceManager.class).setPlaylistPageCount(10);
+
+        YoutubeAudioSourceManager source = source(YoutubeAudioSourceManager.class);
+        source.setPlaylistPageCount(10);
+
+//        try {
+//            ArrayList<IpBlock> ipBlocks = new ArrayList<>();
+//            ipBlocks.add(new Ipv4Block("162.0.237.93/32"));
+//            ipBlocks.add(new Ipv4Block("162.0.236.21/32"));
+//            AbstractRoutePlanner planner = new RotatingIpRoutePlanner(ipBlocks);
+//            new YoutubeIpRotatorSetup(planner)
+//                    .forSource(source)
+//                    .setup();
+//        } catch (Exception ignored) { }
+
+
     }
     
     public Bot getBot()

@@ -63,6 +63,7 @@ class StatsCmd(bot: Bot) : Command() {
                 .addField("Users", "${event.jda.guilds.stream().mapToInt { g: Guild -> g.members.size }.sum()}", true)
                 .addField("Guilds", "${event.jda.guilds.size}", true)
                 .addField("Streams", "$voiceConnections Active", true)
+                .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
         event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
     }
 
