@@ -20,6 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jmusicbot.Bot
 import com.jagrosh.jmusicbot.commands.FunCommand
+import com.jagrosh.jmusicbot.commands.admin.getDefaultColor
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.MessageBuilder
 import org.apache.http.client.HttpClient
 import org.apache.http.client.ResponseHandler
 import org.apache.http.client.methods.HttpGet
@@ -36,9 +39,15 @@ class ChatBotCmd(bot: Bot) : FunCommand() {
         val message = java.net.URLEncoder.encode(event.args, "utf-8")
         val channelId: String = event.channel.id
         if (event.args.isNullOrBlank()) {
-
+            val builder = MessageBuilder()
+            val ebuilder = EmbedBuilder()
+                    .setColor(getDefaultColor(event))
+                    .setTitle(":scream_cat: Please say something to me!")
+                    .setDescription("**Usage:** ${event.client.prefix}chatbot <message>")
+            event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
+        } else {
+            event.channel.sendMessage("> ${event.message.contentDisplay.replace("${event.client.prefix}chatbot ", "").replace("${event.client.altPrefix}chatbot ", "")}\n**(${event.author.asMention})** ${getChatBotResponse(message, event)}").queue()
         }
-        event.channel.sendMessage("> ${event.message.contentDisplay.replace("${event.client.prefix}chatbot ", "").replace("${event.client.altPrefix}chatbot ", "")}\n**(${event.author.asMention})** ${getChatBotResponse(message, event)}").queue()
     }// When HttpClient instance is no longer needed,
 
     // shut down the connection manager to ensure
@@ -78,6 +87,7 @@ class ChatBotCmd(bot: Bot) : FunCommand() {
         this.category = Category("Fun")
         name = "chatbot"
         help = "lets you have a conversation with siren"
+        arguments = "<message>"
         aliases = bot.config.getAliases(name)
         guildOnly = false
     }

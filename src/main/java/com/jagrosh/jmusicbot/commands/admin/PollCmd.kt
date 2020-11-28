@@ -26,12 +26,16 @@ class PollCmd(bot: Bot) : AdminCommand() {
         val builder = MessageBuilder()
         val ebuilder = EmbedBuilder()
                 .setColor(getDefaultColor(event))
-                .setTitle("New Poll: When should we kill the Ender Dragon on the new SMP?")
-                .setDescription("Some people want to fight the dragon tomorrow, others want to wait. Please only fill in the poll below if you have played on the new SMP.\n" +
-                        "\n**Vote options:\n" +
-                        ":one: I want to fight the dragon tomorrow.\n" +
-                        ":two: I want to wait a week or two before the fight the dragon.\n" +
-                        ":three: I want to wait a long time before the fight the dragon.**\n")
+                .setTitle("**Report Info**")
+                .setDescription("**Use this format to report players**:\n" +
+                        "\n" +
+                        "IGN:\n" +
+                        "Reason:\n" +
+                        "Evidence:\n" +
+                        "\n" +
+                        "Failure to follow this format can result in denial.\n" +
+                        "\n" +
+                        "Please note, evidence **MUST** be included. Failure to provide sufficient evidence will result in denial. Evidence for chat offences must be screenshots of your full minecraft window and cannot be cropped to just the chat. Evidence for hacking or teaming must be a video. Videos with low FPS will not be taken as sufficient evidence. Staff members will either react with a :white_check_mark: or a :x: stating if it is denied or accepted.")
         event.channel.deleteMessageById(event.message.id).queue()
         event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
     }

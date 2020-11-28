@@ -37,16 +37,25 @@ class LoveTestCmd(bot: Bot) : BaseCatCmd() {
     override fun execute(event: CommandEvent) {
         val argsFormatted = java.net.URLEncoder.encode(event.args, "utf-8")
         val argsWithoutAnd = argsFormatted.replace("+and+", " ")
-        val builder = MessageBuilder()
-        val ebuilder = EmbedBuilder()
-                .setColor(getDefaultColor(event))
-                .setAuthor("Love Test Results:", null, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png")
-                .setTitle("**:one: ${loveTestFname(argsWithoutAnd, event)}\n\n" +
-                        ":two: ${loveTestSname(argsWithoutAnd, event)}\n\n" +
-                        ":bar_chart: ${loveTestPercentage(argsWithoutAnd, event)}%\n\n" +
-                        ":pencil: ${loveTestNotes(argsWithoutAnd, event)}**")
-                .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
-        event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
+        if (event.args.isNullOrBlank()) {
+            val builder = MessageBuilder()
+            val ebuilder = EmbedBuilder()
+                    .setColor(getDefaultColor(event))
+                    .setTitle(":scream_cat: Please list two names!")
+                    .setDescription("**Usage:** ${event.client.prefix}lovetest <name one> <name two>")
+            event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
+        } else {
+            val builder = MessageBuilder()
+            val ebuilder = EmbedBuilder()
+                    .setColor(getDefaultColor(event))
+                    .setAuthor("Love Test Results:", null, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png")
+                    .setTitle("**:one: ${loveTestFname(argsWithoutAnd, event)}\n\n" +
+                            ":two: ${loveTestSname(argsWithoutAnd, event)}\n\n" +
+                            ":bar_chart: ${loveTestPercentage(argsWithoutAnd, event)}%\n\n" +
+                            ":pencil: ${loveTestNotes(argsWithoutAnd, event)}**")
+                    .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
+            event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
+        }
     }
 
     private fun loveTestPercentage(argsWithoutAnd: String, kittyFact: CommandEvent): String {
@@ -157,6 +166,7 @@ class LoveTestCmd(bot: Bot) : BaseCatCmd() {
         this.category = Category("Fun")
         name = "lovetest"
         help = "test the chances of relationship"
+        arguments = "<name one> <name two>"
         aliases = bot.config.getAliases(name)
         guildOnly = true
     }
