@@ -28,7 +28,6 @@ import com.jagrosh.jmusicbot.commands.general.SirenAboutCmd;
 import com.jagrosh.jmusicbot.commands.general.StatsCmd;
 import com.jagrosh.jmusicbot.commands.mod.BanCmd;
 import com.jagrosh.jmusicbot.commands.mod.KickCmd;
-import com.jagrosh.jmusicbot.commands.mod.WarnCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
 import com.jagrosh.jmusicbot.entities.Prompt;
@@ -133,11 +132,12 @@ public class SirenBot {
                         new ChatBotCmd(bot),
                         new CovidCmd(bot),
                         new LoveTestCmd(bot),
+                        new HypixelSkyblockCmd(bot),
                         rollCmd,
 
                         new KickCmd(bot),
                         new BanCmd(bot),
-                        new WarnCmd(bot),
+//                        new WarnCmd(bot),
 
                         new PrefixCmd(bot),
                         new SetdjCmd(bot),

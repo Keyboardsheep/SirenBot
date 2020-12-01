@@ -42,7 +42,7 @@ class CatFactCmd(bot: Bot) : BaseCatCmd() {
             val ebuilder = EmbedBuilder()
                     .setColor(getDefaultColor(event))
                     .setTitle("**:cat: Random Cat Fact:**")
-                    .setImage("$kittyFact")
+                    .setDescription("$kittyFact")
                     .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
             lastExecutionMillisByChannelMap[channelId] = now

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.keyboardsheep</groupId>
     <artifactId>SirenBot</artifactId>
-    <version>Snapshot-HUGE3</version>
+    <version>Snapshot-HelpFix-NoWarn1</version>
     <packaging>jar</packaging>
 
     <repositories>
