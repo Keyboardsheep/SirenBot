@@ -4,15 +4,18 @@
 
 ###### Forked from [JMusicBot](https://github.com/jagrosh/MusicBot/)
 
+[![Online Status](https://top.gg/api/widget/status/754375096734318712.svg)](https://top.gg/bot/754375096734318712)
+
 [![Website](https://img.shields.io/badge/-Website-informational)](https://siren.fun)
 [![Invite Me](https://img.shields.io/badge/Discord-Invite%20Me!-success)](https://discordapp.com/oauth2/authorize?client_id=754375096734318712&scope=bot&permissions=2146958847&guild_id=0)
 [![Support](https://img.shields.io/badge/Discord-Support-critical)](https://discord.gg/Eyetd8J)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Keyboardsheep/SirenBot?label=Last%20Commit)
 
 ## Features
-  * Quick & smooth loading of songs
-  * "DJ" role that can moderate the music (A "Mod" role will be coming soon)
-  * Clean and messages & GUIs
+
+* Quick & smooth loading of songs
+* "DJ" role that can moderate the music (A "Mod" role will be coming soon)
+* Clean and messages & GUIs
   * Channel-topic playback bar
   * Fun & useful commands
 

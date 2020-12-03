@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.User
 
-class HelpCmd(bot: Bot) : Command() {
+class HelpCmdNo(bot: Bot) : Command() {
     lateinit var commandClient: CommandClient
 
     init {
@@ -43,7 +43,13 @@ class HelpCmd(bot: Bot) : Command() {
                         }
                     }
                 val owner: User? = event.jda.getUserById(commandClient.ownerId)
-                event.replyInDm(builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
+                event.replyInDm(
+                    builder.build(),
+                    { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                    event!!.replyWarning(
+                        "Help message cannot be sent because you are blocking Direct Messages."
+                    )
+                }
                 val adminBuilder = EmbedBuilder()
                 builder.setTitle("**" + event.selfUser.name + "** Commands:")
                 commandClient.commands
@@ -90,9 +96,18 @@ class HelpCmd(bot: Bot) : Command() {
                         }
                     }
                 if (owner != null) {
-                    ownerBuilder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
+                    ownerBuilder.setFooter(
+                        "For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.",
+                        owner.avatarUrl
+                    )
                 }
-                event.replyInDm(ownerBuilder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
+                event.replyInDm(
+                    ownerBuilder.build(),
+                    { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                    event!!.replyWarning(
+                        "Help message cannot be sent because you are blocking Direct Messages."
+                    )
+                }
             } else {
                 if (event.args == "Mod" || event.args == "DJ" || event.args == "Admin" || event.args == "Music" || event.args == "Owner") {
                     val Builder = EmbedBuilder()
@@ -110,9 +125,18 @@ class HelpCmd(bot: Bot) : Command() {
                         }
                     val owner: User? = event.jda.getUserById(commandClient.ownerId)
                     if (owner != null) {
-                        Builder.setFooter("For additional help, contact ${owner.asTag} or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
+                        Builder.setFooter(
+                            "For additional help, contact ${owner.asTag} or join https://discord.gg/Eyetd8J.",
+                            owner.avatarUrl
+                        )
                     }
-                    event.replyInDm(Builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
+                    event.replyInDm(
+                        Builder.build(),
+                        { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                        event!!.replyWarning(
+                            "Help message cannot be sent because you are blocking Direct Messages."
+                        )
+                    }
                 } else {
                     event.reply(":scream_cat: You must select from the following categories (Case sensitive): **Music, DJ, Fun, Mod, Admin, Owner**")
                 }
@@ -141,7 +165,13 @@ class HelpCmd(bot: Bot) : Command() {
                             }
                         }
                     val owner: User? = event.jda.getUserById(commandClient.ownerId)
-                    event.replyInDm(builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
+                    event.replyInDm(
+                        builder.build(),
+                        { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                        event!!.replyWarning(
+                            "Help message cannot be sent because you are blocking Direct Messages."
+                        )
+                    }
                     val adminBuilder = EmbedBuilder()
                     builder.setTitle("**" + event.selfUser.name + "** Commands:")
                     commandClient.commands
@@ -162,9 +192,18 @@ class HelpCmd(bot: Bot) : Command() {
                             }
                         }
                     if (owner != null) {
-                        adminBuilder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
+                        adminBuilder.setFooter(
+                            "For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.",
+                            owner.avatarUrl
+                        )
                     }
-                    event.replyInDm(adminBuilder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
+                    event.replyInDm(
+                        adminBuilder.build(),
+                        { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                        event!!.replyWarning(
+                            "Help message cannot be sent because you are blocking Direct Messages."
+                        )
+                    }
                 } else {
                     if (event.args == "Mod" || event.args == "DJ" || event.args == "Admin" || event.args == "Music") {
                         val Builder = EmbedBuilder()
@@ -182,9 +221,18 @@ class HelpCmd(bot: Bot) : Command() {
                             }
                         val owner: User? = event.jda.getUserById(commandClient.ownerId)
                         if (owner != null) {
-                            Builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
+                            Builder.setFooter(
+                                "For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.",
+                                owner.avatarUrl
+                            )
                         }
-                        event.replyInDm(Builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
+                        event.replyInDm(
+                            Builder.build(),
+                            { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                            event!!.replyWarning(
+                                "Help message cannot be sent because you are blocking Direct Messages."
+                            )
+                        }
                     } else {
                         event.reply(":scream_cat: You must select from the following categories (Case sensitive): **Music, DJ, Fun, Mod, Admin**")
                     }
@@ -214,9 +262,18 @@ class HelpCmd(bot: Bot) : Command() {
                             }
                         val owner: User? = event.jda.getUserById(commandClient.ownerId)
                         if (owner != null) {
-                            builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
+                            builder.setFooter(
+                                "For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.",
+                                owner.avatarUrl
+                            )
                         }
-                        event.replyInDm(builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
+                        event.replyInDm(
+                            builder.build(),
+                            { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                            event!!.replyWarning(
+                                "Help message cannot be sent because you are blocking Direct Messages."
+                            )
+                        }
                     } else {
                         if (event.args == "Mod" || event.args == "DJ" || event.args == "Music") {
                             val Builder = EmbedBuilder()
@@ -234,9 +291,18 @@ class HelpCmd(bot: Bot) : Command() {
                                 }
                             val owner: User? = event.jda.getUserById(commandClient.ownerId)
                             if (owner != null) {
-                                Builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
+                                Builder.setFooter(
+                                    "For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.",
+                                    owner.avatarUrl
+                                )
                             }
-                            event.replyInDm(Builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
+                            event.replyInDm(
+                                Builder.build(),
+                                { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                                event!!.replyWarning(
+                                    "Help message cannot be sent because you are blocking Direct Messages."
+                                )
+                            }
                         } else {
                             event.reply(":scream_cat: You must select from the following categories (Case sensitive): **Music, DJ, Fun, Mod**")
                         }
@@ -265,9 +331,18 @@ class HelpCmd(bot: Bot) : Command() {
                             }
                         val owner: User? = event.jda.getUserById(commandClient.ownerId)
                         if (owner != null) {
-                            builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
+                            builder.setFooter(
+                                "For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.",
+                                owner.avatarUrl
+                            )
                         }
-                        event.replyInDm(builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
+                        event.replyInDm(
+                            builder.build(),
+                            { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                            event!!.replyWarning(
+                                "Help message cannot be sent because you are blocking Direct Messages."
+                            )
+                        }
                     } else {
                         if (event.args == "Mod" || event.args == "DJ" || event.args == "Music") {
                             val Builder = EmbedBuilder()
@@ -285,9 +360,18 @@ class HelpCmd(bot: Bot) : Command() {
                                 }
                             val owner: User? = event.jda.getUserById(commandClient.ownerId)
                             if (owner != null) {
-                                Builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
+                                Builder.setFooter(
+                                    "For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.",
+                                    owner.avatarUrl
+                                )
                             }
-                            event.replyInDm(Builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
+                            event.replyInDm(
+                                Builder.build(),
+                                { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                                event!!.replyWarning(
+                                    "Help message cannot be sent because you are blocking Direct Messages."
+                                )
+                            }
                         } else {
                             event.reply(":scream_cat: You must select from the following categories (Case sensitive): **Music, DJ, Fun**")
                         }

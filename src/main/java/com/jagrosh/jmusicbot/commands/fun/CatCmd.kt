@@ -64,9 +64,9 @@ class CatCmd(bot: Bot) : BaseCatCmd() {
         if (now > lastExecutionMillis + BaseCatCmd.Companion.QUIET_MILLIS) {
             val builder = MessageBuilder()
             val ebuilder = EmbedBuilder()
-                    .setColor(getDefaultColor(event))
-                    .setImage(kittyUrl)
-                    .setDescription("**I found a kitty!** :cat:")
+                .setColor(getDefaultColor(event))
+                .setImage(kittyUrl)
+                .setDescription(":cat: **I found a kitty!**")
                     .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
             lastExecutionMillisByChannelMap[channelId] = now

@@ -133,6 +133,7 @@ public class SirenBot {
                         new CovidCmd(bot),
                         new LoveTestCmd(bot),
                         new HypixelSkyblockCmd(bot),
+                        new BreadCmd(bot),
                         rollCmd,
 
                         new KickCmd(bot),
