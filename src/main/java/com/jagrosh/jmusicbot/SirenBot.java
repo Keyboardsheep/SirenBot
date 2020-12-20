@@ -125,6 +125,7 @@ public class SirenBot {
 
                         new CatCmd(bot),
                         new CatFactCmd(bot),
+                        new DogFactCmd(bot),
 //                        new TriviaCmd(bot),
                         new CatApiCatCmd(bot),
                         new HttpCatCmd(bot),

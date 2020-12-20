@@ -32,7 +32,7 @@ public class FormatUtil {
         String str = "";
         for(int i=0; i<12; i++)
             if(i == (int)(percent*12))
-                str+="\uD83D\uDD18"; // 🔘
+                str += "<a:sirendisk:788506336471547934>"; // 🔘
             else
                 str+="▬";
         return str;

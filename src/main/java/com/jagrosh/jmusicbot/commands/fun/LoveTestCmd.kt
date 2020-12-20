@@ -15,7 +15,6 @@
  */
 package com.jagrosh.jmusicbot.commands.`fun`
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jmusicbot.Bot
@@ -29,7 +28,6 @@ import org.apache.http.impl.client.BasicResponseHandler
 import org.apache.http.impl.client.DefaultHttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.io.IOException
 
 @Suppress("DEPRECATION")
 class LoveTestCmd(bot: Bot) : BaseCatCmd() {
@@ -40,123 +38,48 @@ class LoveTestCmd(bot: Bot) : BaseCatCmd() {
         if (event.args.isNullOrBlank()) {
             val builder = MessageBuilder()
             val ebuilder = EmbedBuilder()
-                    .setColor(getDefaultColor(event))
-                    .setTitle(":scream_cat: Please list two names!")
-                    .setDescription("**Usage:** ${event.client.prefix}lovetest <name one> <name two>")
+                .setColor(getDefaultColor(event))
+                .setTitle(":scream_cat: Please list two names!")
+                .setDescription("**Usage:** ${event.client.prefix}lovetest <name one> and <name two>")
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
         } else {
             val builder = MessageBuilder()
+            val title = try {
+                val loveTestResults = fetchLoveTestResults(argsWithoutAnd)
+                "**:one: ${loveTestResults["fname"]}\n\n" +
+                        ":two: ${loveTestResults["sname"]}\n\n" +
+                        ":bar_chart: ${loveTestResults["percentage"]}\n\n" +
+                        ":pencil: ${loveTestResults["result"]}**\n\n"
+            } catch (e: Exception) {
+                log.warn("Unable to fetch lovetest.", e)
+                "**Unable to compute lovetest.**"
+            }
+
             val ebuilder = EmbedBuilder()
-                    .setColor(getDefaultColor(event))
-                    .setAuthor("Love Test Results:", null, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png")
-                    .setTitle("**:one: ${loveTestFname(argsWithoutAnd, event)}\n\n" +
-                            ":two: ${loveTestSname(argsWithoutAnd, event)}\n\n" +
-                            ":bar_chart: ${loveTestPercentage(argsWithoutAnd, event)}%\n\n" +
-                            ":pencil: ${loveTestNotes(argsWithoutAnd, event)}**")
-                    .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
+                .setColor(getDefaultColor(event))
+                .setAuthor(
+                    "Love Test Results:",
+                    null,
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/1200px-Heart_coraz%C3%B3n.svg.png"
+                )
+                .setTitle(title)
+                .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
         }
     }
 
-    private fun loveTestPercentage(argsWithoutAnd: String, kittyFact: CommandEvent): String {
+    private fun fetchLoveTestResults(argsWithoutAnd: String): Map<*, *> {
         val httpclient: HttpClient = DefaultHttpClient()
         return try {
             val args = argsWithoutAnd.split(" ".toRegex()).toTypedArray()
-            val httpget = HttpGet("https://love-calculator.p.rapidapi.com/getPercentage?fname=${args[0]}&sname=${args[1]}&rapidapi-key=9bd583665emsh222e22b0a648b81p10c06bjsnfb5eef2cbb62")
+            val httpget =
+                HttpGet("https://love-calculator.p.rapidapi.com/getPercentage?fname=${args[0]}&sname=${args[1]}&rapidapi-key=9bd583665emsh222e22b0a648b81p10c06bjsnfb5eef2cbb62")
             println("executing request " + httpget.uri)
 
             val responseHandler: ResponseHandler<String> = BasicResponseHandler()
-            var responseBody: String? = null
-            responseBody = try {
-                httpclient.execute(httpget, responseHandler)
-            } catch (e: IOException) {
-                log.warn("Unable to fetch lovetest.", e)
-                return "Unable to compute lovetest."
-            }
-            try {
-                ((ObjectMapper().readValue("[$responseBody]", MutableList::class.java) as List<*>)[0] as Map<*, *>)["percentage"] as String
-            } catch (e: JsonProcessingException) {
-                log.warn("Unable to read lovetest response.", e)
-                return "Unable to read lovetest response."
-            }
-        } finally {
-            httpclient.connectionManager.shutdown()
-        }
-    }
+            var responseBody = httpclient.execute(httpget, responseHandler)
 
-    private fun loveTestNotes(argsWithoutAnd: String, kittyFact: CommandEvent): String {
-        val httpclient: HttpClient = DefaultHttpClient()
-        return try {
-            val args = argsWithoutAnd.split(" ".toRegex()).toTypedArray()
-            val httpget = HttpGet("https://love-calculator.p.rapidapi.com/getPercentage?fname=${args[0]}&sname=${args[1]}&rapidapi-key=9bd583665emsh222e22b0a648b81p10c06bjsnfb5eef2cbb62")
-            println("executing request " + httpget.uri)
-
-            val responseHandler: ResponseHandler<String> = BasicResponseHandler()
-            var responseBody: String? = null
-            responseBody = try {
-                httpclient.execute(httpget, responseHandler)
-            } catch (e: IOException) {
-                log.warn("Unable to fetch lovetest.", e)
-                return "Unable to compute lovetest."
-            }
-            try {
-                ((ObjectMapper().readValue("[$responseBody]", MutableList::class.java) as List<*>)[0] as Map<*, *>)["result"] as String
-            } catch (e: JsonProcessingException) {
-                log.warn("Unable to read lovetest response.", e)
-                return "Unable to read lovetest response."
-            }
-        } finally {
-            httpclient.connectionManager.shutdown()
-        }
-    }
-
-    private fun loveTestFname(argsWithoutAnd: String, kittyFact: CommandEvent): String {
-        val httpclient: HttpClient = DefaultHttpClient()
-        return try {
-            val args = argsWithoutAnd.split(" ".toRegex()).toTypedArray()
-            val httpget = HttpGet("https://love-calculator.p.rapidapi.com/getPercentage?fname=${args[0]}&sname=${args[1]}&rapidapi-key=9bd583665emsh222e22b0a648b81p10c06bjsnfb5eef2cbb62")
-            println("executing request " + httpget.uri)
-
-            val responseHandler: ResponseHandler<String> = BasicResponseHandler()
-            var responseBody: String? = null
-            responseBody = try {
-                httpclient.execute(httpget, responseHandler)
-            } catch (e: IOException) {
-                log.warn("Unable to fetch lovetest.", e)
-                return "Unable to compute lovetest."
-            }
-            try {
-                ((ObjectMapper().readValue("[$responseBody]", MutableList::class.java) as List<*>)[0] as Map<*, *>)["fname"] as String
-            } catch (e: JsonProcessingException) {
-                log.warn("Unable to read lovetest response.", e)
-                return "Unable to read lovetest response."
-            }
-        } finally {
-            httpclient.connectionManager.shutdown()
-        }
-    }
-
-    private fun loveTestSname(argsWithoutAnd: String, kittyFact: CommandEvent): String {
-        val httpclient: HttpClient = DefaultHttpClient()
-        return try {
-            val args = argsWithoutAnd.split(" ".toRegex()).toTypedArray()
-            val httpget = HttpGet("https://love-calculator.p.rapidapi.com/getPercentage?fname=${args[0]}&sname=${args[1]}&rapidapi-key=9bd583665emsh222e22b0a648b81p10c06bjsnfb5eef2cbb62")
-            println("executing request " + httpget.uri)
-
-            val responseHandler: ResponseHandler<String> = BasicResponseHandler()
-            var responseBody: String? = null
-            responseBody = try {
-                httpclient.execute(httpget, responseHandler)
-            } catch (e: IOException) {
-                log.warn("Unable to fetch lovetest.", e)
-                return "Unable to compute lovetest."
-            }
-            try {
-                ((ObjectMapper().readValue("[$responseBody]", MutableList::class.java) as List<*>)[0] as Map<*, *>)["sname"] as String
-            } catch (e: JsonProcessingException) {
-                log.warn("Unable to read lovetest response.", e)
-                return "Unable to read lovetest response."
-            }
+            (ObjectMapper().readValue("[$responseBody]", MutableList::class.java) as List<*>)[0] as Map<*, *>
         } finally {
             httpclient.connectionManager.shutdown()
         }
@@ -166,7 +89,7 @@ class LoveTestCmd(bot: Bot) : BaseCatCmd() {
         this.category = Category("Fun")
         name = "lovetest"
         help = "test the chances of relationship"
-        arguments = "<name one> <name two>"
+        arguments = "<name one> and <name two>"
         aliases = bot.config.getAliases(name)
         guildOnly = true
     }
