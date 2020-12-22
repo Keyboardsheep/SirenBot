@@ -152,7 +152,8 @@ class RollCmd(bot: Bot) : FunCommand() {
                     .setColor(Color.GREEN)
                     .setDescription(member!!.asMention + " rolled a D" + sideCount + "! **OUTPUT:**")
             channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
-            channel.sendMessage(rollOutputMessage).queue { message: Message -> handleQueuedDiceMessage(member.user, false, message) }
+            channel.sendMessage(rollOutputMessage.replace(",", ""))
+                .queue { message: Message -> handleQueuedDiceMessage(member.user, false, message) }
         } else {
             val user = jda.getUserById(dmUserId)
             user!!.openPrivateChannel()

@@ -1,11 +1,13 @@
 package com.jagrosh.jmusicbot.commands.general
 
+import com.ibm.dtfj.javacore.parser.j9.section.monitor.MonitorPatternMatchers.owner
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandClient
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jmusicbot.Bot
+import com.jagrosh.jmusicbot.commands.OwnerCommand
 import net.dv8tion.jda.api.EmbedBuilder
-import net.dv8tion.jda.api.Permission
+import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.User
@@ -20,280 +22,95 @@ class HelpCmd(bot: Bot) : Command() {
     }
 
     override fun execute(event: CommandEvent) {
-        if (event.member.id == event.client.ownerId) {
-            if (event.args.isEmpty()) {
+
+        val isOwner = event.member.id == event.client.ownerId
+
+        var firstEmbed = true
+        commandClient.commands
+            .filter { it !is OwnerCommand }
+            .groupBy { it.category?.name }
+            .forEach { name, commands ->
                 val builder = EmbedBuilder()
-                var category: Category? = null
-                builder.setTitle("**" + event.selfUser.name + "** Commands:")
-                commandClient.commands
-                    .filter { it.category?.name == null || it.category?.name == "Music" || it.category?.name == "Fun" || it.category?.name == "DJ" || it.category?.name == "Mod" }
-                    .forEach { command ->
-                        if (!command.isHidden && (!command.isOwnerCommand || event.isOwner)) {
-                            if (category != command.category) {
-                                category = command.category
-                                val message = category.let { it?.name } ?: "No Category"
+                if (firstEmbed) {
+                    builder.setTitle("**" + event.selfUser.name + "** Commands:")
+                    firstEmbed = false
+                }
+                var commandCategory: Category? = null
+
+                commands.forEach { command ->
+                    if (!command.isHidden && (!command.isOwnerCommand || event.isOwner)) {
+                        if (commandCategory != command.category) {
+                            commandCategory = command.category
+                            if (commandCategory?.name != null) {
+                                val message = commandCategory!!.name
                                 builder.appendDescription("\n\n  **").appendDescription(message)
                                     .appendDescription(":**\n")
                             }
-                            builder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                .appendDescription(if (commandClient.prefix == null) " " else "")
-                                .appendDescription(command.name)
-                                .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                .appendDescription(" - ").appendDescription(command.help)
                         }
+                        builder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
+                            .appendDescription(if (commandClient.prefix == null) " " else "")
+                            .appendDescription(command.name)
+                            .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
+                            .appendDescription(" - ").appendDescription(command.help)
                     }
-                val owner: User? = event.jda.getUserById(commandClient.ownerId)
-                event.replyInDm(builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
-                val adminBuilder = EmbedBuilder()
-                builder.setTitle("**" + event.selfUser.name + "** Commands:")
-                commandClient.commands
-                    .filter { it.category?.name == "Admin" }
-                    .forEach { command ->
-                        if (!command.isHidden && (!command.isOwnerCommand || event.isOwner)) {
-                            if (category != command.category) {
-                                category = command.category
-                                val message = category.let { it?.name } ?: "No Category"
-                                adminBuilder.appendDescription("\n\n  **").appendDescription(message)
-                                    .appendDescription(":**\n")
-                            }
-                            adminBuilder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                .appendDescription(if (commandClient.prefix == null) " " else "")
-                                .appendDescription(command.name)
-                                .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                .appendDescription(" - ").appendDescription(command.help)
-                        }
-                    }
+                }
+                if (name == "Admin" && !isOwner) {
+                    setHelpFooter(builder, event.jda)
+                }
                 event.replyInDm(
-                    adminBuilder.build(),
+                    builder.build(),
                     { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
                     event!!.replyWarning(
                         "Help message cannot be sent because you are blocking Direct Messages."
                     )
                 }
-                val ownerBuilder = EmbedBuilder()
-                builder.setTitle("**" + event.selfUser.name + "** Commands:")
-                commandClient.commands
-                    .filter { it.category?.name == "Owner" }
-                    .forEach { command ->
-                        if (!command.isHidden && (!command.isOwnerCommand || event.isOwner)) {
-                            if (category != command.category) {
-                                category = command.category
-                                val message = category.let { it?.name } ?: "No Category"
-                                ownerBuilder.appendDescription("\n\n  **").appendDescription(message)
-                                    .appendDescription(":**\n")
-                            }
-                            ownerBuilder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                .appendDescription(if (commandClient.prefix == null) " " else "")
-                                .appendDescription(command.name)
-                                .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                .appendDescription(" - ").appendDescription(command.help)
-                        }
-                    }
-                if (owner != null) {
-                    ownerBuilder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
-                }
-                event.replyInDm(ownerBuilder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
-            } else {
-                if (event.args == "Mod" || event.args == "DJ" || event.args == "Admin" || event.args == "Music" || event.args == "Owner") {
-                    val Builder = EmbedBuilder()
-                    Builder.setTitle("**" + event.args + "** Commands:")
-                    commandClient.commands
-                        .filter { it.category?.name == event.args }
-                        .forEach { command ->
-                            if (!command.isHidden && (!command.isOwnerCommand || event!!.isOwner)) {
-                                Builder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                    .appendDescription(if (commandClient.prefix == null) " " else "")
-                                    .appendDescription(command.name)
-                                    .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                    .appendDescription(" - ").appendDescription(command.help)
-                            }
-                        }
-                    val owner: User? = event.jda.getUserById(commandClient.ownerId)
-                    if (owner != null) {
-                        Builder.setFooter("For additional help, contact ${owner.asTag} or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
-                    }
-                    event.replyInDm(Builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
-                } else {
-                    event.reply(":scream_cat: You must select from the following categories (Case sensitive): **Music, DJ, Fun, Mod, Admin, Owner**")
-                }
             }
-        } else {
-            if (event.member.hasPermission(Permission.MANAGE_SERVER)) {
-                if (event.args.isEmpty()) {
-                    val builder = EmbedBuilder()
-                    var category: Category? = null
-                    builder.setTitle("**" + event.selfUser.name + "** Commands:")
-                    commandClient.commands
-                        .filter { it.category?.name == null || it.category?.name == "Music" || it.category?.name == "Fun" || it.category?.name == "DJ" || it.category?.name == "Mod" }
-                        .forEach { command ->
-                            if (!command.isHidden && (!command.isOwnerCommand || event.isOwner)) {
-                                if (category != command.category) {
-                                    category = command.category
-                                    val message = category.let { it?.name } ?: "No Category"
-                                    builder.appendDescription("\n\n  **").appendDescription(message)
-                                        .appendDescription(":**\n")
-                                }
-                                builder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                    .appendDescription(if (commandClient.prefix == null) " " else "")
-                                    .appendDescription(command.name)
-                                    .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                    .appendDescription(" - ").appendDescription(command.help)
-                            }
+
+        if (isOwner) {
+
+            val ownerBuilder = EmbedBuilder()
+            var commandCategory: Category? = null
+
+            commandClient.commands
+                .filter { it.category?.name == "Owner" }
+                .forEach { command ->
+                    if (!command.isHidden && (!command.isOwnerCommand || event.isOwner)) {
+                        if (commandCategory != command.category) {
+                            commandCategory = command.category
+                            val message = commandCategory.let { it?.name } ?: "No Category"
+                            ownerBuilder.appendDescription("\n\n  **").appendDescription(message)
+                                .appendDescription(":**\n")
                         }
-                    val owner: User? = event.jda.getUserById(commandClient.ownerId)
-                    event.replyInDm(builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
-                    val adminBuilder = EmbedBuilder()
-                    builder.setTitle("**" + event.selfUser.name + "** Commands:")
-                    commandClient.commands
-                        .filter { it.category?.name == "Admin" }
-                        .forEach { command ->
-                            if (!command.isHidden && (!command.isOwnerCommand || event.isOwner)) {
-                                if (category != command.category) {
-                                    category = command.category
-                                    val message = category.let { it?.name } ?: "No Category"
-                                    adminBuilder.appendDescription("\n\n  **").appendDescription(message)
-                                        .appendDescription(":**\n")
-                                }
-                                adminBuilder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                    .appendDescription(if (commandClient.prefix == null) " " else "")
-                                    .appendDescription(command.name)
-                                    .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                    .appendDescription(" - ").appendDescription(command.help)
-                            }
-                        }
-                    if (owner != null) {
-                        adminBuilder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
-                    }
-                    event.replyInDm(adminBuilder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
-                } else {
-                    if (event.args == "Mod" || event.args == "DJ" || event.args == "Admin" || event.args == "Music") {
-                        val Builder = EmbedBuilder()
-                        Builder.setTitle("**" + event.args + "** Commands:")
-                        commandClient.commands
-                            .filter { it.category?.name == event.args }
-                            .forEach { command ->
-                                if (!command.isHidden && (!command.isOwnerCommand || event!!.isOwner)) {
-                                    Builder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                        .appendDescription(if (commandClient.prefix == null) " " else "")
-                                        .appendDescription(command.name)
-                                        .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                        .appendDescription(" - ").appendDescription(command.help)
-                                }
-                            }
-                        val owner: User? = event.jda.getUserById(commandClient.ownerId)
-                        if (owner != null) {
-                            Builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
-                        }
-                        event.replyInDm(Builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
-                    } else {
-                        event.reply(":scream_cat: You must select from the following categories (Case sensitive): **Music, DJ, Fun, Mod, Admin**")
+                        ownerBuilder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
+                            .appendDescription(if (commandClient.prefix == null) " " else "")
+                            .appendDescription(command.name)
+                            .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
+                            .appendDescription(" - ").appendDescription(command.help)
                     }
                 }
-            } else {
-                if (event.member.hasPermission(Permission.BAN_MEMBERS)) {
-                    if (event.args.isEmpty()) {
-                        val builder = EmbedBuilder()
-                        var category: Category? = null
-                        builder.setTitle("**" + event.selfUser.name + "** Commands:")
-                        commandClient.commands
-                            .filter { it.category?.name == null || it.category?.name == "Music" || it.category?.name == "Fun" || it.category?.name == "DJ" || it.category?.name == "Mod" }
-                            .forEach { command ->
-                                if (!command.isHidden && (!command.isOwnerCommand || event.isOwner)) {
-                                    if (category != command.category) {
-                                        category = command.category
-                                        val message = category.let { it?.name } ?: "No Category"
-                                        builder.appendDescription("\n\n  **").appendDescription(message)
-                                            .appendDescription(":**\n")
-                                    }
-                                    builder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                        .appendDescription(if (commandClient.prefix == null) " " else "")
-                                        .appendDescription(command.name)
-                                        .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                        .appendDescription(" - ").appendDescription(command.help)
-                                }
-                            }
-                        val owner: User? = event.jda.getUserById(commandClient.ownerId)
-                        if (owner != null) {
-                            builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
-                        }
-                        event.replyInDm(builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
-                    } else {
-                        if (event.args == "Mod" || event.args == "DJ" || event.args == "Music") {
-                            val Builder = EmbedBuilder()
-                            Builder.setTitle("**" + event.args + "** Commands:")
-                            commandClient.commands
-                                .filter { it.category?.name == event.args }
-                                .forEach { command ->
-                                    if (!command.isHidden && (!command.isOwnerCommand || event!!.isOwner)) {
-                                        Builder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                            .appendDescription(if (commandClient.prefix == null) " " else "")
-                                            .appendDescription(command.name)
-                                            .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                            .appendDescription(" - ").appendDescription(command.help)
-                                    }
-                                }
-                            val owner: User? = event.jda.getUserById(commandClient.ownerId)
-                            if (owner != null) {
-                                Builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
-                            }
-                            event.replyInDm(Builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
-                        } else {
-                            event.reply(":scream_cat: You must select from the following categories (Case sensitive): **Music, DJ, Fun, Mod**")
-                        }
-                    }
-                } else {
-                    if (event.args.isEmpty()) {
-                        val builder = EmbedBuilder()
-                        var category: Category? = null
-                        builder.setTitle("**" + event.selfUser.name + "** Commands:")
-                        commandClient.commands
-                            .filter { it.category?.name == null || it.category?.name == "Music" || it.category?.name == "Fun" || it.category?.name == "DJ" }
-                            .forEach { command ->
-                                if (!command.isHidden && (!command.isOwnerCommand || event.isOwner)) {
-                                    if (category != command.category) {
-                                        category = command.category
-                                        val message = category.let { it?.name } ?: "No Category"
-                                        builder.appendDescription("\n\n  **").appendDescription(message)
-                                            .appendDescription(":**\n")
-                                    }
-                                    builder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                        .appendDescription(if (commandClient.prefix == null) " " else "")
-                                        .appendDescription(command.name)
-                                        .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                        .appendDescription(" - ").appendDescription(command.help)
-                                }
-                            }
-                        val owner: User? = event.jda.getUserById(commandClient.ownerId)
-                        if (owner != null) {
-                            builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
-                        }
-                        event.replyInDm(builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
-                    } else {
-                        if (event.args == "Mod" || event.args == "DJ" || event.args == "Music") {
-                            val Builder = EmbedBuilder()
-                            Builder.setTitle("**" + event.args + "** Commands:")
-                            commandClient.commands
-                                .filter { it.category?.name == event.args }
-                                .forEach { command ->
-                                    if (!command.isHidden && (!command.isOwnerCommand || event!!.isOwner)) {
-                                        Builder.appendDescription("\n`").appendDescription(commandClient.textualPrefix)
-                                            .appendDescription(if (commandClient.prefix == null) " " else "")
-                                            .appendDescription(command.name)
-                                            .appendDescription(if (command.arguments == null) "`" else " " + command.arguments + "`")
-                                            .appendDescription(" - ").appendDescription(command.help)
-                                    }
-                                }
-                            val owner: User? = event.jda.getUserById(commandClient.ownerId)
-                            if (owner != null) {
-                                Builder.setFooter("For additional help, contact " + owner.asTag + " or join https://discord.gg/Eyetd8J.", owner.avatarUrl)
-                            }
-                            event.replyInDm(Builder.build(), { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? -> event!!.replyWarning("Help message cannot be sent because you are blocking Direct Messages.") }
-                        } else {
-                            event.reply(":scream_cat: You must select from the following categories (Case sensitive): **Music, DJ, Fun**")
-                        }
-                    }
-                }
+            if (owner != null) {
+                setHelpFooter(ownerBuilder, event.jda)
+            }
+            event.replyInDm(
+                ownerBuilder.build(),
+                { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
+                event!!.replyWarning(
+                    "Help message cannot be sent because you are blocking Direct Messages."
+                )
             }
         }
+
+    }
+
+    private fun setHelpFooter(ownerBuilder: EmbedBuilder, jda: JDA) {
+        val owner: User? = jda.getUserById(commandClient.ownerId)
+
+        val ownerSnippet = if (owner != null) "contact ${owner.asTag} or" else ""
+
+        ownerBuilder.setFooter(
+            "For additional help, $ownerSnippet join https://discord.gg/Eyetd8J.",
+            owner?.avatarUrl
+                ?: "https://cdn.discordapp.com/icons/710128446814289920/a_59f64ff98b72a950146affdc7d4e0466.gif" // PYGMY POOOOOOOOOF IMAGE
+        )
     }
 }

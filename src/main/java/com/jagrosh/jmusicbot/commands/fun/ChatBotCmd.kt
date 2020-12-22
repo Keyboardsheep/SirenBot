@@ -46,7 +46,15 @@ class ChatBotCmd(bot: Bot) : FunCommand() {
                     .setDescription("**Usage:** ${event.client.prefix}chatbot <message>")
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
         } else {
-            event.channel.sendMessage("> ${event.message.contentDisplay.replace("${event.client.prefix}chatbot ", "").replace("${event.client.altPrefix}chatbot ", "")}\n**(${event.author.asMention})** ${getChatBotResponse(message, event)}").queue()
+            event.channel.sendMessage(
+                "> ${
+                    event.message.contentDisplay.replace(
+                        "${event.client.prefix}chatbot ",
+                        "",
+                        true
+                    ).replace("${event.client.altPrefix}chatbot ", "", true)
+                }\n**(${event.author.asMention})** ${getChatBotResponse(message, event)}"
+            ).queue()
         }
     }// When HttpClient instance is no longer needed,
 

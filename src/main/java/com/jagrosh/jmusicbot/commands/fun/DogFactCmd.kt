@@ -42,7 +42,7 @@ class DogFactCmd(bot: Bot) : BaseCatCmd() {
             val ebuilder = EmbedBuilder()
                 .setColor(getDefaultColor(event))
                 .setTitle("**:pouting_cat: Random Dog Fact:**")
-                .setDescription("$doggoFact")
+                .setDescription(doggoFact)
                 .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
             lastExecutionMillisByChannelMap[channelId] = now
@@ -74,7 +74,7 @@ class DogFactCmd(bot: Bot) : BaseCatCmd() {
                 responseBody = try {
                     httpclient.execute(httpget, responseHandler)
                 } catch (e: IOException) {
-                    log.warn("Unable to fetch cat fact.", e)
+                    log.warn("Unable to fetch dog fact.", e)
                     return "https://http.cat/500"
                 }
                 try {
