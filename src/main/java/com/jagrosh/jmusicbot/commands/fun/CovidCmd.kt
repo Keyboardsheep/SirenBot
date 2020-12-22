@@ -43,7 +43,7 @@ class CovidCmd(bot: Bot) : BaseCatCmd() {
         val builder = MessageBuilder()
         val ebuilder = EmbedBuilder()
             .setColor(getDefaultColor(event))
-            .setTitle("**:cat: Latest COVID-19 Statistics:**")
+            .setTitle("**:cat: Latest Global COVID-19 Statistics:**")
             .addField("Total Cases", (NumberFormat.getNumberInstance(Locale.US).format(covidStats["cases"])), true)
             .addField(
                 "Total Recovered",

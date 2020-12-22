@@ -25,17 +25,11 @@ class PollCmd(bot: Bot) : AdminCommand() {
     override fun execute(event: CommandEvent) {
         val builder = MessageBuilder()
         val ebuilder = EmbedBuilder()
-                .setColor(getDefaultColor(event))
-                .setTitle("**Report Info**")
-                .setDescription("**Use this format to report players**:\n" +
-                        "\n" +
-                        "IGN:\n" +
-                        "Reason:\n" +
-                        "Evidence:\n" +
-                        "\n" +
-                        "Failure to follow this format can result in denial.\n" +
-                        "\n" +
-                        "Please note, evidence **MUST** be included. Failure to provide sufficient evidence will result in denial. Evidence for chat offences must be screenshots of your full minecraft window and cannot be cropped to just the chat. Evidence for hacking or teaming must be a video. Videos with low FPS will not be taken as sufficient evidence. Staff members will either react with a :white_check_mark: or a :x: stating if it is denied or accepted.")
+            .setColor(getDefaultColor(event))
+            .setTitle("**AntiCheat Alert**")
+            .setDescription("**Whatsnottolike** has been banned for **Speed (Type C)**")
+            .addField("Server", "Global", false)
+            .setThumbnail("https://visage.surgeplay.com/face/512/4b35c02de82d4dd4b25e2fa7fbeb9b22")
         event.channel.deleteMessageById(event.message.id).queue()
         event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
     }
