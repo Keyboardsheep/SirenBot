@@ -48,7 +48,7 @@ class LoveTestCmd(bot: Bot) : BaseCatCmd() {
                 val loveTestResults = fetchLoveTestResults(argsWithoutAnd)
                 "**:one: ${loveTestResults["fname"]}\n\n" +
                         ":two: ${loveTestResults["sname"]}\n\n" +
-                        ":bar_chart: ${loveTestResults["percentage"]}\n\n" +
+                        ":bar_chart: ${loveTestResults["percentage"]}%\n\n" +
                         ":pencil: ${loveTestResults["result"]}**\n\n"
             } catch (e: Exception) {
                 log.warn("Unable to fetch lovetest.", e)

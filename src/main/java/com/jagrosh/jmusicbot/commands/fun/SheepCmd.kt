@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2017 John Grosh <john.a.grosh@gmail.com>.
  *
@@ -26,10 +25,10 @@ import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.util.*
 
-class BreadCmd(bot: Bot) : BaseCatCmd() {
-    var log: Logger = LoggerFactory.getLogger("BreadCmd")
+class SheepCmd(bot: Bot) : BaseCatCmd() {
+    var log: Logger = LoggerFactory.getLogger("SheepCmd")
     override fun execute(event: CommandEvent) {
-        val breadNumber = Random().nextInt(71) + 1
+        val shepNumber = Random().nextInt(29) + 1
         val now = System.currentTimeMillis()
         val channelId = event.channel.id
         val lastExecutionMillis = lastExecutionMillisByChannelMap.getOrDefault(channelId, 0L)
@@ -37,8 +36,8 @@ class BreadCmd(bot: Bot) : BaseCatCmd() {
             val builder = MessageBuilder()
             val ebuilder = EmbedBuilder()
                 .setColor(getDefaultColor(event))
-                .setImage("https://media.siren.fun/bread/$breadNumber.jpeg")
-                .setDescription(":cat: **I found bread!**")
+                .setImage("https://media.siren.fun/sheps/$shepNumber.jpg")
+                .setDescription(":cat: **I found a sheep!**")
                 .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
             lastExecutionMillisByChannelMap[channelId] = now
@@ -54,8 +53,8 @@ class BreadCmd(bot: Bot) : BaseCatCmd() {
 
     init {
         this.category = Category("Fun")
-        name = "bread"
-        help = "shows some bread pictures"
+        name = "sheep"
+        help = "shows some sheepy pictures"
         aliases = bot.config.getAliases(name)
         guildOnly = false
     }

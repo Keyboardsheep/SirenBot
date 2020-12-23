@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.keyboardsheep</groupId>
     <artifactId>SirenBot</artifactId>
-    <version>Snapshot-HelpFix-NoWarn1</version>
+    <version>Snapshot-LoveTestFix1</version>
     <packaging>jar</packaging>
 
     <repositories>
