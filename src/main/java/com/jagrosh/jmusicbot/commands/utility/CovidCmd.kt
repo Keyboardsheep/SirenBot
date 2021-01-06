@@ -18,7 +18,7 @@ package com.jagrosh.jmusicbot.commands.utility
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jmusicbot.Bot
-import com.jagrosh.jmusicbot.commands.`fun`.BaseCatCmd
+import com.jagrosh.jmusicbot.commands.UtilityCommand
 import com.jagrosh.jmusicbot.commands.admin.getDefaultColor
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.MessageBuilder
@@ -33,7 +33,7 @@ import java.text.NumberFormat
 import java.util.*
 
 @Suppress("DEPRECATION")
-class CovidCmd(bot: Bot) : BaseCatCmd() {
+class CovidCmd(bot: Bot) : UtilityCommand() {
     var log: Logger = LoggerFactory.getLogger("CovidCmd")
     override fun execute(event: CommandEvent) {
         val covidStats = fetchCovidStats()
@@ -85,7 +85,7 @@ class CovidCmd(bot: Bot) : BaseCatCmd() {
     }
 
     init {
-        this.category = Category("Fun")
+        this.category = Category("Utility")
         name = "covid"
         help = "shows statistics of COVID-19"
         aliases = bot.config.getAliases(name)

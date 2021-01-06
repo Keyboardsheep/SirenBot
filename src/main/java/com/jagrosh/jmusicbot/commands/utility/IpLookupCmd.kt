@@ -18,6 +18,7 @@ package com.jagrosh.jmusicbot.commands.`fun`
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jmusicbot.Bot
+import com.jagrosh.jmusicbot.commands.UtilityCommand
 import com.jagrosh.jmusicbot.commands.admin.getDefaultColor
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.MessageBuilder
@@ -31,7 +32,7 @@ import org.slf4j.LoggerFactory
 import java.awt.Color
 
 @Suppress("DEPRECATION")
-class IpLookupCmd(bot: Bot) : BaseCatCmd() {
+class IpLookupCmd(bot: Bot) : UtilityCommand() {
     var log: Logger = LoggerFactory.getLogger("IpLookupCmd")
     override fun execute(event: CommandEvent) {
         val argsFormatted = event.args
@@ -108,7 +109,7 @@ class IpLookupCmd(bot: Bot) : BaseCatCmd() {
     }
 
     init {
-        this.category = Category("Fun")
+        this.category = Category("Utility")
         name = "iplookup"
         help = "shows some info about an ip address"
         aliases = bot.config.getAliases(name)
