@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.jagrosh.jmusicbot.commands.`fun`
+package com.jagrosh.jmusicbot.commands.utility
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jmusicbot.Bot
+import com.jagrosh.jmusicbot.commands.`fun`.BaseCatCmd
 import com.jagrosh.jmusicbot.commands.admin.getDefaultColor
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.MessageBuilder

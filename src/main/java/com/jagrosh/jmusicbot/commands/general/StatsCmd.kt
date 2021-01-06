@@ -47,23 +47,26 @@ class StatsCmd(bot: Bot) : Command() {
         val minutes = duration / 60000L % 60
         val seconds = duration / 1000L % 60
 
-        val uptime: String? = ((if (years == 0L) "" else "**$years**y ") + (if (months == 0L) "" else "**$months**mo ") + (if (days == 0L) "" else "**$days**d ") + (if (hours == 0L) "" else "**$hours**h ")
-                + (if (minutes == 0L) "" else "**$minutes**m ") + if (seconds == 0L) "" else "**$seconds**s ") /* + (milliseconds == 0 ? "" : milliseconds + " Milliseconds, ") */
-        val voiceConnections = event.jda.guilds.stream().filter { g: Guild -> g.selfMember.voiceState!!.inVoiceChannel() }.count()
+        val uptime: String? =
+            ((if (years == 0L) "" else "**$years**y ") + (if (months == 0L) "" else "**$months**mo ") + (if (days == 0L) "" else "**$days**d ") + (if (hours == 0L) "" else "**$hours**h ")
+                    + (if (minutes == 0L) "" else "**$minutes**m ") + if (seconds == 0L) "" else "**$seconds**s ") /* + (milliseconds == 0 ? "" : milliseconds + " Milliseconds, ") */
+        val voiceConnections =
+            event.jda.guilds.stream().filter { g: Guild -> g.selfMember.voiceState!!.inVoiceChannel() }.count()
         val actualTrueRamPercent = trueRamPercent.setScale(2, BigDecimal.ROUND_HALF_UP)
         var owner: User? = event.jda.getUserById(event.client.ownerId)
         val ebuilder = EmbedBuilder()
-                .setColor(getDefaultColor(event))
-                .setTitle("${event.selfUser.name}'s Stats:")
+            .setColor(getDefaultColor(event))
+            .setTitle("${event.selfUser.name}'s Stats:")
 //                .setThumbnail("https://i.imgur.com/4shAsfd.png")
-                .addField("Owner", "${owner?.asMention}", true)
-                .addField("Ram Usage", "$actualTrueRamPercent%", true)
-                .addField("Ping", "**${event.jda.gatewayPing}**ms", true)
-                .addField("Uptime", "$uptime", true)
-                .addField("Users", "${event.jda.guilds.stream().mapToInt { g: Guild -> g.members.size }.sum()}", true)
-                .addField("Guilds", "${event.jda.guilds.size}", true)
-                .addField("Streams", "$voiceConnections Active", true)
-                .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
+            .addField("Owner", "${owner?.asMention}", true)
+            .addField("Ram Usage", "$actualTrueRamPercent%", true)
+//                .addField("Ram Usage", "$actualTrueRamPercent% (${usedMemBD.toString().toInt()/1073741824}/${totalMemBD.toString().toInt()/1073741824})", true)
+            .addField("Ping", "**${event.jda.gatewayPing}**ms", true)
+            .addField("Uptime", "$uptime", true)
+            .addField("Users", "${event.jda.guilds.stream().mapToInt { g: Guild -> g.members.size }.sum()}", true)
+            .addField("Guilds", "${event.jda.guilds.size}", true)
+            .addField("Streams", "$voiceConnections Active", true)
+            .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
         event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
     }
 

@@ -5,6 +5,7 @@
 ###### Forked from [JMusicBot](https://github.com/jagrosh/MusicBot/)
 
 [![Online Status](https://top.gg/api/widget/status/754375096734318712.svg?noavatar=true)](https://top.gg/bot/754375096734318712)
+[![Server Count](https://top.gg/api/widget/servers/754375096734318712.svg?noavatar=true)](https://top.gg/bot/754375096734318712)
 [![Website](https://img.shields.io/badge/-Website-informational)](https://siren.fun)
 [![Invite Me](https://img.shields.io/badge/Discord-Invite%20Me!-success)](https://discordapp.com/oauth2/authorize?client_id=754375096734318712&scope=bot&permissions=2146958847&guild_id=0)
 [![Support](https://img.shields.io/badge/Discord-Support-critical)](https://discord.gg/Eyetd8J)
@@ -30,11 +31,23 @@ siren help - Shows these commands
 
 Fun:
 
+siren chatbot <message> - Lets you have a conversation with Siren
+siren bread - Shows some random bread
+siren catfact - Shows a random cat fact
+siren dogfact - Shows a random dog fact
+siren lovetest <name one> and <name two> - Test the chance of a successful relationship
+siren sheep - Shows some random sheep
 siren mycat - Shows some of my kitties
 siren cat - Shows some random kitties
 siren dog - Shows some random doggos
 siren httpcat - Shows some http kitties
 siren roll ([optional amount of sides on the die] [optional "-s" to roll the die privately in DMs]) - Rolls a die which is perfect for games like DnD
+(More coming soon)
+
+Utility:
+
+siren covid - Shows some stats about covid
+siren iplookup <ip address> - Shows some info about an IP
 (More coming soon)
 
 Music:
@@ -65,6 +78,7 @@ siren volume [0-150] - Sets or shows volume
 
 Moderation:
 
+siren warn <username> [reason] - Warns a user in your guild
 siren kick <username> [reason] - Kicks a user from your guild
 siren ban <username> [reason] - Bans a user from your guild
 (More coming soon)

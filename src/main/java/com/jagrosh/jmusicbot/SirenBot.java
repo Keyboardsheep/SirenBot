@@ -31,17 +31,21 @@ import com.jagrosh.jmusicbot.commands.mod.KickCmd;
 import com.jagrosh.jmusicbot.commands.mod.WarnCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
+import com.jagrosh.jmusicbot.commands.utility.CovidCmd;
 import com.jagrosh.jmusicbot.entities.Prompt;
 import com.jagrosh.jmusicbot.gui.GUI;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.Activity;
+import org.discordbots.api.client.DiscordBotListAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class SirenBot {
@@ -161,7 +165,9 @@ public class SirenBot {
                         new SetgameCmd(bot),
                         new SetnameCmd(bot),
                         new SetstatusCmd(bot),
-                        new ShutdownCmd(bot)
+                        new ShutdownCmd(bot),
+
+                        new IpLookupCmd(bot)
                 );
         if (config.useEval())
             cb.addCommand(new EvalCmd(bot));
@@ -204,6 +210,11 @@ public class SirenBot {
                     .setBulkDeleteSplittingEnabled(true)
                     .build();
             bot.setJDA(jda);
+            if (jda.getSelfUser().getId().equals("754375096734318712")) {
+                startTopGgTimer(jda);
+            } else {
+                log.warn("'" + jda.getSelfUser().getId() + "' is not '754375096734318712', won't update top.gg server count.");
+            }
         } catch (LoginException ex) {
             prompt.alert(Prompt.Level.ERROR, "SirenBot", ex + "\nPlease make sure you are "
                     + "editing the correct config.txt file, and that you have used the "
@@ -214,5 +225,26 @@ public class SirenBot {
                     + "invalid: " + ex + "\nConfig Location: " + config.getConfigLocation());
             System.exit(1);
         }
+    }
+
+    private static void startTopGgTimer(JDA jda) {
+
+        TimerTask repeatedTask = new TimerTask() {
+            public void run() {
+                DiscordBotListAPI api = new DiscordBotListAPI.Builder()
+                        .token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijc1NDM3NTA5NjczNDMxODcxMiIsImJvdCI6dHJ1ZSwiaWF0IjoxNjA5OTA1MDg0fQ.-dABTYyNEsv6DjtQ6xnNvuNE7cQ_1mrjbzqnawjsISE")
+                        .botId("754375096734318712")
+                        .build();
+
+                int serverCount = jda.getGuilds().size(); // the total amount of servers across all shards + 7 mwahahaha
+
+                api.setStats(serverCount);
+            }
+        };
+        Timer timer = new Timer("Timer");
+
+        long delay = 120000L;
+        long period = 1000L * 60L * 60L * 6L;
+        timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
 }
