@@ -95,7 +95,7 @@ class CatCmd(bot: Bot) : BaseCatCmd() {
 
     init {
         this.category = Category("Fun")
-        name = "mycat"
+        name = "devcat"
         help = "shows some of my kitties"
         aliases = bot.config.getAliases(name)
         guildOnly = false
