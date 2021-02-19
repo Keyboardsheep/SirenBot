@@ -236,14 +236,14 @@ public class SirenBot {
                         .botId("754375096734318712")
                         .build();
 
-                int serverCount = jda.getGuilds().size(); // the total amount of servers across all shards + 7 mwahahaha
+                int serverCount = jda.getGuilds().size(); // the total amount of servers across all shards
 
                 api.setStats(serverCount);
             }
         };
         Timer timer = new Timer("Timer");
 
-        long delay = 120000L;
+        long delay = 240000L;
         long period = 1000L * 60L * 60L * 6L;
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
     }
