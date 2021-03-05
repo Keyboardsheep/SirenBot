@@ -31,7 +31,7 @@ import java.util.*
 class RollCmd(bot: Bot) : FunCommand() {
     protected var lastExecutionMillisByChannelMap: MutableMap<String, Long> = LinkedHashMap()
     private val dmGuiMessageIdToUserIdMap: MutableMap<String, String> = LinkedHashMap()
-    private val guiMessageIds: MutableSet<String> = LinkedHashSet()
+    private val guiMessageIds: MutableSet<String> = LinkedHashSet() // TODO: 3/3/2021 Don't let this list grow FOREVER
 
     companion object {
         const val QUIET_MILLIS = 3000

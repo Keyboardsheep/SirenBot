@@ -20,79 +20,135 @@
   * Fun & useful commands
 
 ## Commands
-```
-General:
 
-siren about - Shows info about the bot
-siren ping - Checks the bot's latency
-siren stats - Checks the bot's various stats
-siren settings - Shows the bot's settings
-siren help - Shows these commands
+**Siren's full command list is availible at [https://siren.fun/commands](https://docs.siren.fun/v2/commands).**
 
-Fun:
+[comment]: <> (## Commands)
 
-siren chatbot <message> - Lets you have a conversation with Siren
-siren bread - Shows some random bread
-siren catfact - Shows a random cat fact
-siren dogfact - Shows a random dog fact
-siren lovetest <name one> and <name two> - Test the chance of a successful relationship
-siren sheep - Shows some random sheep
-siren mycat - Shows some of my kitties
-siren cat - Shows some random kitties
-siren dog - Shows some random doggos
-siren httpcat - Shows some http kitties
-siren roll ([optional amount of sides on the die] [optional "-s" to roll the die privately in DMs]) - Rolls a die which is perfect for games like DnD
-(More coming soon)
+[comment]: <> (```)
 
-Utility:
+[comment]: <> (General:)
 
-siren covid - Shows some stats about covid
-siren iplookup <ip address> - Shows some info about an IP
-(More coming soon)
+[comment]: <> (siren about - Shows info about the bot)
 
-Music:
+[comment]: <> (siren ping - Checks the bot's latency)
 
-siren lyrics [song name] - Shows the lyrics to the currently-playing song
-siren nowplaying - Shows the song that is currently playing
-siren play <title|URL|subcommand> - Plays the provided song
-siren playlists - Shows the available playlists
-siren queue [pagenum] - Shows the current queue
-siren seek <HH:MM:SS>|<MM:SS>|<SS> - Seeks to a certain position in the song (Exmaple: "siren seek 10:00" would seek to 10 mins.)
-siren remove <position|ALL> - Removes a song from the queue
-siren search <query> - Searches Youtube for a provided query
-siren scsearch <query> - Searches Soundcloud for a provided query
-siren shuffle - Shuffles songs you have added
-siren skip - Votes to skip the current song
+[comment]: <> (siren stats - Checks the bot's various stats)
 
-DJ Only:
+[comment]: <> (siren settings - Shows the bot's settings)
 
-siren forceremove <user> - Removes all entries by a user from the queue
-siren forceskip - Skips the current song
-siren movetrack <from> <to> - Move a track in the current queue to a different position
-siren pause - Pauses the current song
-siren playnext <title|URL> - Plays a single song next
-siren repeat [on|off] - Re-adds music to the queue when finished
-siren skipto <position> - Skips to the specified song
-siren stop - Stops the current song and clears the queue
-siren volume [0-150] - Sets or shows volume
+[comment]: <> (siren help - Shows these commands)
 
-Moderation:
+[comment]: <> (Fun:)
 
-siren warn <username> [reason] - Warns a user in your guild
-siren kick <username> [reason] - Kicks a user from your guild
-siren ban <username> [reason] - Bans a user from your guild
-(More coming soon)
+[comment]: <> (siren chatbot <message> - Lets you have a conversation with Siren)
 
-Admin Only:
+[comment]: <> (siren bread - Shows some random bread)
 
-siren prefix <prefix|NONE> - Sets a server-specific prefix
-siren setdj <rolename|NONE> - Sets the DJ role for certain music commands
-siren settc <channel|NONE> - Sets the text channel for music commands
-siren setvc <channel|NONE> - Sets the voice channel for playing music
-siren purge <number of messages> - Deletes messages in bulk (Max of 100)
-siren announce <message> - Puts whatever you say into an embed (More features will be added soon)
-siren setembedcolor <hex code|role> - You can change the color of Siren's embeds (Or you set them to be the color of Siren's role with the command "siren setembedcolor role".)
-```
+[comment]: <> (siren catfact - Shows a random cat fact)
+
+[comment]: <> (siren dogfact - Shows a random dog fact)
+
+[comment]: <> (siren lovetest <name one> and <name two> - Test the chance of a successful relationship)
+
+[comment]: <> (siren sheep - Shows some random sheep)
+
+[comment]: <> (siren mycat - Shows some of my kitties)
+
+[comment]: <> (siren cat - Shows some random kitties)
+
+[comment]: <> (siren dog - Shows some random doggos)
+
+[comment]: <> (siren httpcat - Shows some http kitties)
+
+[comment]: <> (siren roll &#40;[optional amount of sides on the die] [optional "-s" to roll the die privately in DMs]&#41; - Rolls a die which is perfect for games like DnD)
+
+[comment]: <> (&#40;More coming soon&#41;)
+
+[comment]: <> (Utility:)
+
+[comment]: <> (siren covid - Shows some stats about covid)
+
+[comment]: <> (siren iplookup <ip address> - Shows some info about an IP)
+
+[comment]: <> (&#40;More coming soon&#41;)
+
+[comment]: <> (Music:)
+
+[comment]: <> (siren lyrics [song name] - Shows the lyrics to the currently-playing song)
+
+[comment]: <> (siren nowplaying - Shows the song that is currently playing)
+
+[comment]: <> (siren play <title|URL|subcommand> - Plays the provided song)
+
+[comment]: <> (siren playlists - Shows the available playlists)
+
+[comment]: <> (siren queue [pagenum] - Shows the current queue)
+
+[comment]: <> (siren seek <HH:MM:SS>|<MM:SS>|<SS> - Seeks to a certain position in the song &#40;Exmaple: "siren seek 10:00" would seek to 10 mins.&#41;)
+
+[comment]: <> (siren remove <position|ALL> - Removes a song from the queue)
+
+[comment]: <> (siren search <query> - Searches Youtube for a provided query)
+
+[comment]: <> (siren scsearch <query> - Searches Soundcloud for a provided query)
+
+[comment]: <> (siren shuffle - Shuffles songs you have added)
+
+[comment]: <> (siren skip - Votes to skip the current song)
+
+[comment]: <> (DJ Only:)
+
+[comment]: <> (siren forceremove <user> - Removes all entries by a user from the queue)
+
+[comment]: <> (siren forceskip - Skips the current song)
+
+[comment]: <> (siren movetrack <from> <to> - Move a track in the current queue to a different position)
+
+[comment]: <> (siren pause - Pauses the current song)
+
+[comment]: <> (siren playnext <title|URL> - Plays a single song next)
+
+[comment]: <> (siren repeat [on|off] - Re-adds music to the queue when finished)
+
+[comment]: <> (siren skipto <position> - Skips to the specified song)
+
+[comment]: <> (siren stop - Stops the current song and clears the queue)
+
+[comment]: <> (siren volume [0-150] - Sets or shows volume)
+
+[comment]: <> (Moderation:)
+
+[comment]: <> (siren warn <username> [reason] - Warns a user in your guild)
+
+[comment]: <> (siren kick <username> [reason] - Kicks a user from your guild)
+
+[comment]: <> (siren ban <username> [reason] - Bans a user from your guild)
+
+[comment]: <> (&#40;More coming soon&#41;)
+
+[comment]: <> (Admin Only:)
+
+[comment]: <> (siren prefix <prefix|NONE> - Sets a server-specific prefix)
+
+[comment]: <> (siren setdj <rolename|NONE> - Sets the DJ role for certain music commands)
+
+[comment]: <> (siren settc <channel|NONE> - Sets the text channel for music commands)
+
+[comment]: <> (siren setvc <channel|NONE> - Sets the voice channel for playing music)
+
+[comment]: <> (siren purge <number of messages> - Deletes messages in bulk &#40;Max of 100&#41;)
+
+[comment]: <> (siren announce <message> - Puts whatever you say into an embed &#40;More features will be added soon&#41;)
+
+[comment]: <> (siren setembedcolor <hex code|role> - You can change the color of Siren's embeds &#40;Or you set them to be the color of Siren's role with the command "siren setembedcolor role".&#41;)
+
+[comment]: <> (```)
 
 ## Questions/Suggestions/Bug Reports
-**Please read the [Known Bugs & Planned Features List](https://github.com/Keyboardsheep/SirenBot/blob/master/PlannedFeatures+KnownBugs.md) before suggesting a feature**. If you'd like to suggest changes to how the bot functions, recommend more customization options, or report bugs, feel free to either open an [Issue](https://github.com/Keyboardsheep/SirenBot/issues) on this repository, or join [my Discord server](https://discord.gg/Eyetd8J).
+
+**Please read
+the [Known Bugs & Planned Features List](https://github.com/Keyboardsheep/SirenBot/blob/master/PlannedFeatures+KnownBugs.md)
+before suggesting a feature**. If you'd like to suggest changes to how the bot functions, recommend more customization
+options, or report bugs, feel free to either open an [Issue](https://github.com/Keyboardsheep/SirenBot/issues) on this
+repository, or join [my Discord server](https://discord.gg/Eyetd8J).

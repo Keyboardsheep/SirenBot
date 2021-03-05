@@ -16,6 +16,7 @@
 package com.jagrosh.jmusicbot;
 
 import com.jagrosh.jmusicbot.commands.fun.RollCmd;
+import com.jagrosh.jmusicbot.commands.owner.DevHelpCmd;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -32,10 +33,12 @@ import java.util.concurrent.TimeUnit;
 public class Listener extends ListenerAdapter {
     private final Bot bot;
     private RollCmd rollCmd;
+    private DevHelpCmd devHelpCmd;
 
-    public Listener(Bot bot, RollCmd rollCmd) {
+    public Listener(Bot bot, RollCmd rollCmd, DevHelpCmd devHelpCmd) {
         this.bot = bot;
         this.rollCmd = rollCmd;
+        this.devHelpCmd = devHelpCmd;
     }
     
     @Override
@@ -82,7 +85,7 @@ public class Listener extends ListenerAdapter {
     @Override
     public void onMessageReactionAdd(MessageReactionAddEvent event) {
         rollCmd.onMessageReactionAdd(event);
-
+        devHelpCmd.onMessageReactionAdd(event);
     }
 
     @Override
