@@ -15,6 +15,7 @@
  */
 package com.jagrosh.jmusicbot.commands.admin
 
+import com.jagrosh.jdautilities.command.CommandClient
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jmusicbot.Bot
 import com.jagrosh.jmusicbot.commands.AdminCommand
@@ -22,6 +23,7 @@ import com.jagrosh.jmusicbot.settings.Settings
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.MessageBuilder
 import net.dv8tion.jda.api.entities.Guild
+import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
 import org.slf4j.LoggerFactory
 import java.awt.Color
 import java.lang.String
@@ -87,6 +89,11 @@ class SetEmbedColorCmd(bot: Bot) : AdminCommand() {
     }
 
 
+}
+
+fun getDefaultColor(client: CommandClient, event: MessageReactionAddEvent): Int {
+    val settings = client.getSettingsFor<Settings>(event.guild)
+    return getDefaultColor(settings, event.guild)
 }
 
 fun getDefaultColor(event: CommandEvent): Int {

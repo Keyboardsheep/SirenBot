@@ -90,7 +90,6 @@ public class SirenBot {
 
         // set up the command client
         RollCmd rollCmd = new RollCmd(bot);
-        DevHelpCmd devHelpCmd = new DevHelpCmd(bot);
         HelpCmd helpCmd = new HelpCmd(bot);
         CommandClientBuilder cb = new CommandClientBuilder()
                 .setPrefix(config.getPrefix())
@@ -102,7 +101,6 @@ public class SirenBot {
                 .setGuildSettingsManager(settings)
                 .addCommands(aboutCommand,
                         new PingCommand(),
-                        devHelpCmd,
                         new StatsCmd(bot),
                         new SettingsCmd(bot),
                         helpCmd,
@@ -170,6 +168,7 @@ public class SirenBot {
                         new ShutdownCmd(bot),
 
                         new IpLookupCmd(bot)
+//                        new MinecraftServerStatus(bot)
                 );
         if (config.useEval())
             cb.addCommand(new EvalCmd(bot));
@@ -208,7 +207,7 @@ public class SirenBot {
                     .setActivity(nogame ? null : Activity.playing("loading..."))
                     .setStatus(config.getStatus() == OnlineStatus.INVISIBLE || config.getStatus() == OnlineStatus.OFFLINE
                             ? OnlineStatus.INVISIBLE : OnlineStatus.DO_NOT_DISTURB)
-                    .addEventListeners(commandClient, waiter, new Listener(bot, rollCmd, devHelpCmd))
+                    .addEventListeners(commandClient, waiter, new Listener(bot, rollCmd, helpCmd))
                     .setBulkDeleteSplittingEnabled(true)
                     .build();
             bot.setJDA(jda);
