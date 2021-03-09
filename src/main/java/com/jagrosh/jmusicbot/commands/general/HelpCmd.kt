@@ -8,10 +8,12 @@ import com.jagrosh.jmusicbot.commands.admin.getDefaultColor
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.MessageBuilder
+import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageHistory
 import net.dv8tion.jda.api.entities.User
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException
 import java.util.*
 
 class HelpCmd(bot: Bot) : Command() {
@@ -57,16 +59,19 @@ class HelpCmd(bot: Bot) : Command() {
 
         val builder = MessageBuilder()
         val ebuilder = EmbedBuilder()
-                .setColor(getDefaultColor(event))
-                .setAuthor("Siren's Help", null, event.jda.selfUser.avatarUrl)
-                .setDescription(
-                        getHomeDescription()
-                )
-                .appendDescription(
-                        getReactionKey()
-                )
+            .setColor(getDefaultColor(event))
+            .setAuthor("Siren's Help", null, event.jda.selfUser.avatarUrl)
+            .setDescription(
+                getHomeDescription()
+            )
+            .appendDescription(
+                getReactionKey()
+            )
+        if (!event.selfMember.permissions.contains(Permission.MESSAGE_MANAGE)) {
+            ebuilder.setTitle(":warning: **WARNING:** Siren is missing some permissions, bugs may occur. :warning:")
+        }
         event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build())
-                .queue { message: Message -> handleQueuedHelpMessage(message) }
+            .queue { message: Message -> handleQueuedHelpMessage(message) }
     }
 
     private fun handleQueuedHelpMessage(message: Message) {
@@ -104,22 +109,28 @@ class HelpCmd(bot: Bot) : Command() {
         if (guiMessageIds.contains(event.messageId)) {
             if (event.user != event.jda.selfUser) when (event.reactionEmote.name) {
                 UNICODE_HOME -> {
-                    event.reaction.removeReaction(event.user!!).queue()
+                    try {
+                        event.reaction.removeReaction(event.user!!).queue()
+                    } catch (ignore: InsufficientPermissionException) {
+                    }
 
                     event.member?.guild?.selfMember?.color?.rgb
                     val builder = MessageBuilder()
                     val ebuilder = EmbedBuilder()
-                            .setColor(getDefaultColor(commandClient, event))
-                            .setAuthor("Siren's Help", null, event.jda.selfUser.avatarUrl)
-                            .setDescription(
-                                    getHomeDescription()
-                            )
-                            .appendDescription(
-                                    getReactionKey()
-                            )
+                        .setColor(getDefaultColor(commandClient, event))
+                        .setAuthor("Siren's Help", null, event.jda.selfUser.avatarUrl)
+                        .setDescription(
+                            getHomeDescription()
+                        )
+                        .appendDescription(
+                            getReactionKey()
+                        )
+                    if (!event.guild.selfMember.permissions.contains(Permission.MESSAGE_MANAGE)) {
+                        ebuilder.setTitle(":warning: **WARNING:** Siren is missing some permissions, bugs may occur. :warning:")
+                    }
                     // TODO: 3/5/2021 add setHelpFooter to all of these (including the first one higher up)
                     event.channel.editMessageById(event.messageIdLong, builder.setEmbed(ebuilder.build()).build())
-                            .queue()
+                        .queue()
                 }
                 UNICODE_GENERAL -> {
                     handleReaction(event, "General Commands:")
@@ -160,17 +171,20 @@ class HelpCmd(bot: Bot) : Command() {
             event: MessageReactionAddEvent,
             title: String
     ) {
-        event.reaction.removeReaction(event.user!!).queue()
+        try {
+            event.reaction.removeReaction(event.user!!).queue()
+        } catch (ignore: InsufficientPermissionException) {
+        }
         val builder = MessageBuilder()
         val ebuilder = EmbedBuilder()
-                .setColor(getDefaultColor(commandClient, event))
-                .setAuthor("Siren's Help", null, event.jda.selfUser.avatarUrl)
-                .setTitle(title)
+            .setColor(getDefaultColor(commandClient, event))
+            .setAuthor("Siren's Help", null, event.jda.selfUser.avatarUrl)
+            .setTitle(title)
         appendCommands(event, ebuilder, event.reactionEmote.name)
         appendReturnHome(ebuilder)
 
         event.channel.editMessageById(event.messageIdLong, builder.setEmbed(ebuilder.build()).build())
-                .queue()
+            .queue()
     }
 
     private fun appendReturnHome(ebuilder: EmbedBuilder) {
