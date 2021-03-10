@@ -22,10 +22,7 @@ import com.jagrosh.jdautilities.examples.command.PingCommand;
 import com.jagrosh.jmusicbot.commands.admin.*;
 import com.jagrosh.jmusicbot.commands.dj.*;
 import com.jagrosh.jmusicbot.commands.fun.*;
-import com.jagrosh.jmusicbot.commands.general.HelpCmd;
-import com.jagrosh.jmusicbot.commands.general.SettingsCmd;
-import com.jagrosh.jmusicbot.commands.general.SirenAboutCmd;
-import com.jagrosh.jmusicbot.commands.general.StatsCmd;
+import com.jagrosh.jmusicbot.commands.general.*;
 import com.jagrosh.jmusicbot.commands.mod.BanCmd;
 import com.jagrosh.jmusicbot.commands.mod.KickCmd;
 import com.jagrosh.jmusicbot.commands.mod.WarnCmd;
@@ -103,6 +100,7 @@ public class SirenBot {
                         new PingCommand(),
                         new StatsCmd(bot),
                         new SettingsCmd(bot),
+                        new DocsCmd(bot),
                         helpCmd,
 
                         new LyricsCmd(bot),
