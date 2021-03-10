@@ -31,6 +31,7 @@ class DocsCmd(bot: Bot) : Command() {
             .setDescription("If you'd like to view Siren's command list, click [here](https://siren.fun/commands) or run the command **`${event.client.prefix}help`**.")
             .setThumbnail("https://siren.fun/images/company-1-h_kf0s6q4z.png")
             .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
+        event.channel.deleteMessageById(event.message.id).queue()
         event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
     }
 
