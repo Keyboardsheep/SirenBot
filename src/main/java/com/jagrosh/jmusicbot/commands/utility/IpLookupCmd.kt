@@ -79,7 +79,7 @@ class IpLookupCmd(bot: Bot) : UtilityCommand() {
                     .addField("Proxy/VPN", ipResults["proxy"]?.toString()!!.capitalize(), true)
                     .addField("Datacenter", ipResults["hosting"]?.toString()!!.capitalize(), true)
                     .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
-                    .setImage("https://maps.geoapify.com/v1/staticmap?style=dark-matter&width=1200&height=800&center=lonlat:${ipResults["lon"]?.toString()},${ipResults["lat"]?.toString()}&zoom=2&marker=lonlat:${ipResults["lon"]?.toString()},${ipResults["lat"]?.toString()};color:%23ff0000;size:large&apiKey=41f705c36dac4edca0422d79f361cf7f")
+                    .setImage("https://www.siren.fun/api/iplookup_image?lat=${ipResults["lat"]?.toString()}&lon=${ipResults["lon"]?.toString()}")
                 event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
             } catch (e: Exception) {
                 val builder = MessageBuilder()

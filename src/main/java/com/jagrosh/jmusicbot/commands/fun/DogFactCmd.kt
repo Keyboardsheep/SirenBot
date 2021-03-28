@@ -64,7 +64,7 @@ class DogFactCmd(bot: Bot) : BaseCatCmd() {
         private get() {
             val httpclient: HttpClient = DefaultHttpClient()
             return try {
-                val httpget = HttpGet("https://some-random-api.ml/facts/dog")
+                val httpget = HttpGet("https://www.siren.fun/api/dog_fact")
                 println("executing request " + httpget.uri)
 
                 // Create a response handler

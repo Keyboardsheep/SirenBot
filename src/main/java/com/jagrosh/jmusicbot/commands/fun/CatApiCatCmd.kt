@@ -64,7 +64,7 @@ class CatApiCatCmd(bot: Bot) : BaseCatCmd() {
         private get() {
             val httpclient: HttpClient = DefaultHttpClient()
             return try {
-                val httpget = HttpGet("https://api.thecatapi.com/v1/images/search/")
+                val httpget = HttpGet("https://www.siren.fun/api/cat")
                 println("executing request " + httpget.uri)
 
                 // Create a response handler

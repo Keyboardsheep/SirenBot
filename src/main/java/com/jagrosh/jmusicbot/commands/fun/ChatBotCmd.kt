@@ -64,7 +64,7 @@ class ChatBotCmd(bot: Bot) : FunCommand() {
     private fun getChatBotResponse(message: String, event: CommandEvent): String {
         val httpclient: HttpClient = DefaultHttpClient()
         return try {
-            val httpget = HttpGet("http://api.brainshop.ai/get?bid=154126&key=jre75RnLYhQSGiBE&uid=${event.author.id}&msg=$message")
+            val httpget = HttpGet("https://www.siren.fun/api/chatbot?uuid${event.author.id}&msg=$message")
             println("executing request " + httpget.uri)
 
             // Create a response handler

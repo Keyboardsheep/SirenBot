@@ -73,7 +73,7 @@ class LoveTestCmd(bot: Bot) : BaseCatCmd() {
         return try {
             val args = argsWithoutAnd.split(" ".toRegex()).toTypedArray()
             val httpget =
-                HttpGet("https://love-calculator.p.rapidapi.com/getPercentage?fname=${args[0]}&sname=${args[1]}&rapidapi-key=9bd583665emsh222e22b0a648b81p10c06bjsnfb5eef2cbb62")
+                HttpGet("https://www.siren.fun/api/lovetest?f=${args[0]}&s=${args[1]}")
             println("executing request " + httpget.uri)
 
             val responseHandler: ResponseHandler<String> = BasicResponseHandler()

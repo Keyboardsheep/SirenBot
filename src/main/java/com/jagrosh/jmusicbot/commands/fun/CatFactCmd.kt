@@ -64,7 +64,7 @@ class CatFactCmd(bot: Bot) : BaseCatCmd() {
         private get() {
             val httpclient: HttpClient = DefaultHttpClient()
             return try {
-                val httpget = HttpGet("https://catfact.ninja/fact")
+                val httpget = HttpGet("https://www.siren.fun/api/cat_fact")
                 println("executing request " + httpget.uri)
 
                 // Create a response handler
