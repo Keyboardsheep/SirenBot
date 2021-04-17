@@ -29,6 +29,11 @@ import com.jagrosh.jmusicbot.commands.mod.WarnCmd;
 import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
 import com.jagrosh.jmusicbot.commands.utility.CovidCmd;
+import com.jagrosh.jmusicbot.commands.utility.IpLookupCmd;
+import com.jagrosh.jmusicbot.commands.utility.weather.CurrentCmd;
+import com.jagrosh.jmusicbot.commands.utility.weather.StartCmd;
+import com.jagrosh.jmusicbot.commands.utility.weather.VerifyCmd;
+import com.jagrosh.jmusicbot.db.SirenDbKt;
 import com.jagrosh.jmusicbot.entities.Prompt;
 import com.jagrosh.jmusicbot.gui.GUI;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
@@ -59,6 +64,8 @@ public class SirenBot {
     public static void main(String[] args) {
         // startup log
         Logger log = LoggerFactory.getLogger("Startup");
+
+        SirenDbKt.createDb();
 
         // create prompt to handle startup
         Prompt prompt = new Prompt("SirenBot", "Switching to nogui mode. You can manually start in nogui mode by including the -Dnogui=true flag.",
@@ -164,6 +171,10 @@ public class SirenBot {
                         new SetnameCmd(bot),
                         new SetstatusCmd(bot),
                         new ShutdownCmd(bot),
+
+                        new StartCmd(bot),
+                        new VerifyCmd(bot),
+                        new CurrentCmd(bot),
 
                         new IpLookupCmd(bot)
 //                        new MinecraftServerStatus(bot)

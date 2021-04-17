@@ -56,15 +56,12 @@ class ChatBotCmd(bot: Bot) : FunCommand() {
                 }\n**(${event.author.asMention})** ${getChatBotResponse(message, event)}"
             ).queue()
         }
-    }// When HttpClient instance is no longer needed,
+    }
 
-    // shut down the connection manager to ensure
-    // immediate deallocation of all system resources
-    // Create a response handler
     private fun getChatBotResponse(message: String, event: CommandEvent): String {
         val httpclient: HttpClient = DefaultHttpClient()
         return try {
-            val httpget = HttpGet("https://www.siren.fun/api/chatbot?uuid${event.author.id}&msg=$message")
+            val httpget = HttpGet("https://www.siren.fun/api/chatbot?uuid=${event.author.id}&guild=${event.guild.id}&msg=$message")
             println("executing request " + httpget.uri)
 
             // Create a response handler

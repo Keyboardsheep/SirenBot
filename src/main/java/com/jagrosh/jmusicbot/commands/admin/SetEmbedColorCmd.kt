@@ -26,7 +26,6 @@ import net.dv8tion.jda.api.entities.Guild
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent
 import org.slf4j.LoggerFactory
 import java.awt.Color
-import java.lang.String
 
 class SetEmbedColorCmd(bot: Bot) : AdminCommand() {
     var log = LoggerFactory.getLogger("CatCmd")

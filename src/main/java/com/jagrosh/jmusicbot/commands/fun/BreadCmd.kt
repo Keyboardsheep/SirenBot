@@ -33,21 +33,21 @@ class BreadCmd(bot: Bot) : BaseCatCmd() {
         val now = System.currentTimeMillis()
         val channelId = event.channel.id
         val lastExecutionMillis = lastExecutionMillisByChannelMap.getOrDefault(channelId, 0L)
-        if (now > lastExecutionMillis + BaseCatCmd.Companion.QUIET_MILLIS) {
+        if (now > lastExecutionMillis + QUIET_MILLIS) {
             val builder = MessageBuilder()
             val ebuilder = EmbedBuilder()
-                .setColor(getDefaultColor(event))
-                .setImage("https://media.siren.fun/bread/$breadNumber.jpeg")
-                .setDescription(":cat: **I found bread!**")
-                .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
+                    .setColor(getDefaultColor(event))
+                    .setImage("https://media.siren.fun/bread/$breadNumber.jpeg")
+                    .setDescription(":cat: **I found bread!**")
+                    .setFooter("Requested by ${event.author.asTag}", event.author.avatarUrl)
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
             lastExecutionMillisByChannelMap[channelId] = now
         } else {
             val builder = MessageBuilder()
             val ebuilder = EmbedBuilder()
-                .setColor(Color.RED)
-                .setTitle("**Please slow down between commands!**")
-                .setDescription("Please wait ** " + ((BaseCatCmd.Companion.QUIET_MILLIS - (now - lastExecutionMillis)) / 1000 + 1) + " ** more seconds.")
+                    .setColor(Color.RED)
+                    .setTitle("**Please slow down between commands!**")
+                    .setDescription("Please wait ** " + ((QUIET_MILLIS - (now - lastExecutionMillis)) / 1000 + 1) + " ** more seconds.")
             event.channel.sendMessage(builder.setEmbed(ebuilder.build()).build()).queue()
         }
     }

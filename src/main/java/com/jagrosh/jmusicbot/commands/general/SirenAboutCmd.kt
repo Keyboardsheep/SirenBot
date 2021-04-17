@@ -18,7 +18,6 @@ package com.jagrosh.jmusicbot.commands.general
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jdautilities.doc.standard.CommandInfo
-import com.jagrosh.jdautilities.examples.doc.Author
 import com.jagrosh.jmusicbot.commands.admin.getDefaultColor
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.Permission
@@ -26,7 +25,6 @@ import net.dv8tion.jda.api.entities.Guild
 import java.awt.Color
 
 @CommandInfo(name = ["About"], description = "Gets information about the bot.")
-@Author("John Grosh (jagrosh)")
 class SirenAboutCmd(private val color: Color, private val description: String, private val features: Array<String>, vararg perms: Permission) : Command() {
     private var IS_AUTHOR = true
     private var REPLACEMENT_ICON = "+"

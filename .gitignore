@@ -14,3 +14,4 @@ nb*.xml
 /.idea/jarRepositories.xml
 /.idea/encodings.xml
 /.idea/compiler.xml
+/properties/config.properties

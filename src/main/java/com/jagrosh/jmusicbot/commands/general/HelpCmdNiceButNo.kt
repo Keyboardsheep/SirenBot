@@ -1,6 +1,5 @@
 package com.jagrosh.jmusicbot.commands.general
 
-import com.ibm.dtfj.javacore.parser.j9.section.monitor.MonitorPatternMatchers.owner
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandClient
 import com.jagrosh.jdautilities.command.CommandEvent
@@ -88,9 +87,9 @@ class HelpCmdNiceButNo(bot: Bot) : Command() {
                                     .appendDescription(" - ").appendDescription(command.help)
                         }
                     }
-            if (owner != null) {
-                setHelpFooter(ownerBuilder, event.jda)
-            }
+//            if (owner != null) {
+//                setHelpFooter(ownerBuilder, event.jda)
+//            }
             event.replyInDm(
                     ownerBuilder.build(),
                     { unused: Message? -> if (event!!.isFromType(ChannelType.TEXT)) event!!.reactSuccess() }) { t: Throwable? ->
