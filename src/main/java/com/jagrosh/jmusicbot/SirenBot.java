@@ -30,22 +30,24 @@ import com.jagrosh.jmusicbot.commands.music.*;
 import com.jagrosh.jmusicbot.commands.owner.*;
 import com.jagrosh.jmusicbot.commands.utility.CovidCmd;
 import com.jagrosh.jmusicbot.commands.utility.IpLookupCmd;
-import com.jagrosh.jmusicbot.commands.utility.weather.CurrentCmd;
-import com.jagrosh.jmusicbot.commands.utility.weather.StartCmd;
-import com.jagrosh.jmusicbot.commands.utility.weather.VerifyCmd;
-import com.jagrosh.jmusicbot.db.SirenDbKt;
 import com.jagrosh.jmusicbot.entities.Prompt;
 import com.jagrosh.jmusicbot.gui.GUI;
 import com.jagrosh.jmusicbot.settings.SettingsManager;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
-import net.dv8tion.jda.api.*;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -57,6 +59,7 @@ public class SirenBot {
     public final static Permission[] RECOMMENDED_PERMS = new Permission[]{Permission.MESSAGE_READ, Permission.MESSAGE_WRITE, Permission.MESSAGE_HISTORY, Permission.MESSAGE_ADD_REACTION,
             Permission.MESSAGE_EMBED_LINKS, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_MANAGE, Permission.MESSAGE_EXT_EMOJI,
             Permission.MANAGE_CHANNEL, Permission.VOICE_CONNECT, Permission.VOICE_SPEAK, Permission.NICKNAME_CHANGE};
+    public final static GatewayIntent[] INTENTS = {GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.GUILD_VOICE_STATES, GatewayIntent.GUILD_MEMBERS};
 
     /**
      * @param args the command line arguments
@@ -65,7 +68,7 @@ public class SirenBot {
         // startup log
         Logger log = LoggerFactory.getLogger("Startup");
 
-        SirenDbKt.createDb();
+//        SirenDbKt.createDb();
 
         // create prompt to handle startup
         Prompt prompt = new Prompt("SirenBot", "Switching to nogui mode. You can manually start in nogui mode by including the -Dnogui=true flag.",
@@ -172,9 +175,9 @@ public class SirenBot {
                         new SetstatusCmd(bot),
                         new ShutdownCmd(bot),
 
-                        new StartCmd(bot),
-                        new VerifyCmd(bot),
-                        new CurrentCmd(bot),
+//                        new StartCmd(bot),
+//                        new VerifyCmd(bot),
+//                        new CurrentCmd(bot),
 
                         new IpLookupCmd(bot)
 //                        new MinecraftServerStatus(bot)
@@ -210,13 +213,13 @@ public class SirenBot {
         try {
             CommandClient commandClient = cb.build();
             helpCmd.setCommandClient(commandClient);
-            JDA jda = new JDABuilder(AccountType.BOT)
-                    .setToken(config.getToken())
-//                    .setAudioEnabled(true)
+            JDA jda = JDABuilder.create(config.getToken(), Arrays.asList(INTENTS))
+                    .enableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
+                    .disableCache(CacheFlag.ACTIVITY, CacheFlag.CLIENT_STATUS, CacheFlag.EMOTE, CacheFlag.ONLINE_STATUS)
                     .setActivity(nogame ? null : Activity.playing("loading..."))
                     .setStatus(config.getStatus() == OnlineStatus.INVISIBLE || config.getStatus() == OnlineStatus.OFFLINE
                             ? OnlineStatus.INVISIBLE : OnlineStatus.DO_NOT_DISTURB)
-                    .addEventListeners(commandClient, waiter, new Listener(bot, rollCmd, helpCmd))
+                    .addEventListeners(cb.build(), waiter, new Listener(bot, rollCmd, helpCmd))
                     .setBulkDeleteSplittingEnabled(true)
                     .build();
             bot.setJDA(jda);

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.keyboardsheep</groupId>
     <artifactId>SirenBot</artifactId>
-    <version>Snapshot-NewAPI1</version>
+    <version>Snapshot-MusicFIX1</version>
     <packaging>jar</packaging>
 
     <repositories>
@@ -12,6 +12,11 @@
             <id>central</id>
             <name>bintray</name>
             <url>https://jcenter.bintray.com</url>
+        </repository>
+        <repository>
+            <id>dv8tion</id>
+            <name>m2-dv8tion</name>
+            <url>https://m2.dv8tion.net/releases</url>
         </repository>
         <repository>
             <id>bintray-sedmelluq-com.sedmelluq</id>
@@ -35,7 +40,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.0_204</version>
+            <version>4.4.1_353</version>
         </dependency>
         <dependency>
             <groupId>com.sedmelluq</groupId>
