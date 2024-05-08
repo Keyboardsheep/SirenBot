@@ -19,7 +19,8 @@ import com.jagrosh.jmusicbot.Bot;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager;
+import com.sedmelluq.discord.lavaplayer.source.soundcloud.SoundCloudAudioSourceManager;
+import dev.lavalink.youtube.YoutubeAudioSourceManager;
 import net.dv8tion.jda.api.entities.Guild;
 
 /**
@@ -37,7 +38,9 @@ public class PlayerManager extends DefaultAudioPlayerManager
     
     public void init()
     {
-        AudioSourceManagers.registerRemoteSources(this);
+        registerSourceManager(new YoutubeAudioSourceManager(true));
+
+        registerSourceManager(SoundCloudAudioSourceManager.createDefault());
         AudioSourceManagers.registerLocalSource(this);
 
         YoutubeAudioSourceManager source = source(YoutubeAudioSourceManager.class);

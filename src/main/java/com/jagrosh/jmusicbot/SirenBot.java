@@ -113,7 +113,7 @@ public class SirenBot {
                         new DocsCmd(bot),
                         helpCmd,
 
-                        new LyricsCmd(bot),
+//                        new LyricsCmd(bot), TODO: fix lyrics command
                         new NowplayingCmd(bot),
                         new PlayCmd(bot),
 //                        new ErrorPlayCmd(bot),
